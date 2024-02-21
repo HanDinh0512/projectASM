@@ -8,26 +8,9 @@ package entity;
  *
  * @author admin
  */
-public class Student {
-    private String sid;
-    private String name;
+public class Department {
     private int did;
-
-    public String getSid() {
-        return sid;
-    }
-
-    public void setSid(String sid) {
-        this.sid = sid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String dname ;
 
     public int getDid() {
         return did;
@@ -35,6 +18,14 @@ public class Student {
 
     public void setDid(int did) {
         this.did = did;
+    }
+
+    public String getDname() {
+        return dname;
+    }
+
+    public void setDname(String dname) {
+        this.dname = dname;
     }
     
 }
