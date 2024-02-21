@@ -9,5 +9,6 @@ package entity;
  * @author admin
  */
 public class Student {
+    private String id;
     
 }
