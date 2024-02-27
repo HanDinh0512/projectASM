@@ -3,13 +3,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package entity;
-import java.sql.*;
+
+import java.util.Date;
+
 
 /**
  *
  * @author admin
  */
-public class Attendance {
+public class Attendance extends IEntity{
     private int aid;
     private int sesid;
     private String sid ;

@@ -8,7 +8,7 @@ package entity;
  *
  * @author admin
  */
-public class Subject {
+public class Subject extends IEntity{
     private String subid ;
     private String subname ; 
     private int credit;

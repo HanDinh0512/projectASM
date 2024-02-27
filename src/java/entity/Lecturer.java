@@ -8,7 +8,7 @@ package entity;
  *
  * @author admin
  */
-public class Lecturer {
+public class Lecturer extends IEntity{
     private String lid;
     private String lname ;
 

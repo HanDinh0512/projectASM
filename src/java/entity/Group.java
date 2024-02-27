@@ -8,7 +8,7 @@ package entity;
  *
  * @author admin
  */
-public class Group {
+public class Group extends IEntity{
     private int gid;
     private String gname ;
     private String subid ;

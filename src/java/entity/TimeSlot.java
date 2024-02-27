@@ -8,7 +8,7 @@ package entity;
  *
  * @author admin
  */
-public class TimeSlot {
+public class TimeSlot extends IEntity{
     private int tid;
     private String time ;
 

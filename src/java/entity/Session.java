@@ -3,12 +3,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package entity;
-import java.sql.*;
+
+import java.util.Date;
+
 /**
  *
  * @author admin
  */
-public class Session {
+public class Session extends IEntity{
     private int sesid;
     private int gid;
     private String lid ;
@@ -16,6 +18,15 @@ public class Session {
     private int tid;
     private Date date;
     private boolean isTaken;
+    private String term ;
+
+    public String getTerm() {
+        return term;
+    }
+
+    public void setTerm(String term) {
+        this.term = term;
+    }
 
     public int getSesid() {
         return sesid;
