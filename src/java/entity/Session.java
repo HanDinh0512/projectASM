@@ -4,7 +4,7 @@
  */
 package entity;
 
-import java.util.Date;
+import java.sql.*;
 
 /**
  *
@@ -12,10 +12,10 @@ import java.util.Date;
  */
 public class Session extends IEntity{
     private int sesid;
-    private int gid;
-    private String lid ;
-    private String room ;
-    private int tid;
+    private Group gid;
+    private Lecturer lid ;
+    private Room room ;
+    private TimeSlot tid;
     private Date date;
     private boolean isTaken;
     private String term ;
@@ -36,37 +36,39 @@ public class Session extends IEntity{
         this.sesid = sesid;
     }
 
-    public int getGid() {
+    public Group getGid() {
         return gid;
     }
 
-    public void setGid(int gid) {
+    public void setGid(Group gid) {
         this.gid = gid;
     }
 
-    public String getLid() {
+    public Lecturer getLid() {
         return lid;
     }
 
-    public void setLid(String lid) {
+    public void setLid(Lecturer lid) {
         this.lid = lid;
     }
 
-    public String getRoom() {
+    public Room getRoom() {
         return room;
     }
 
-    public void setRoom(String room) {
+    public void setRoom(Room room) {
         this.room = room;
     }
 
-    public int getTid() {
+    public TimeSlot getTid() {
         return tid;
     }
 
-    public void setTid(int tid) {
+    public void setTid(TimeSlot tid) {
         this.tid = tid;
     }
+
+  
 
     public Date getDate() {
         return date;

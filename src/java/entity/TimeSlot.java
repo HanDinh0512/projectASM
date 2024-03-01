@@ -10,7 +10,8 @@ package entity;
  */
 public class TimeSlot extends IEntity{
     private int tid;
-    private String time ;
+    private String timeStart ;
+    private String timeEnd ;
 
     public int getTid() {
         return tid;
@@ -20,12 +21,21 @@ public class TimeSlot extends IEntity{
         this.tid = tid;
     }
 
-    public String getTime() {
-        return time;
+    public String getTimeStart() {
+        return timeStart;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setTimeStart(String timeStart) {
+        this.timeStart = timeStart;
     }
+
+    public String getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(String timeEnd) {
+        this.timeEnd = timeEnd;
+    }
+
     
 }

@@ -4,7 +4,7 @@
  */
 package entity;
 
-import java.util.Date;
+
 
 
 /**
@@ -13,11 +13,11 @@ import java.util.Date;
  */
 public class Attendance extends IEntity{
     private int aid;
-    private int sesid;
-    private String sid ;
+    private Session sesid;
+    private Student sid ;
     private boolean isPresent;
     private String description ;
-    private Date time;
+    private String time;
 
     public int getAid() {
         return aid;
@@ -27,22 +27,23 @@ public class Attendance extends IEntity{
         this.aid = aid;
     }
 
-    public int getSesid() {
+    public Session getSesid() {
         return sesid;
     }
 
-    public void setSesid(int sesid) {
+    public void setSesid(Session sesid) {
         this.sesid = sesid;
     }
 
-    public String getSid() {
+    public Student getSid() {
         return sid;
     }
 
-    public void setSid(String sid) {
+    public void setSid(Student sid) {
         this.sid = sid;
     }
 
+   
     public boolean isIsPresent() {
         return isPresent;
     }
@@ -59,12 +60,13 @@ public class Attendance extends IEntity{
         this.description = description;
     }
 
-    public Date getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(String time) {
         this.time = time;
     }
+
     
 }

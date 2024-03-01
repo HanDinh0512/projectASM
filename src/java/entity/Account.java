@@ -8,11 +8,12 @@ package entity;
  *
  * @author admin
  */
-public class Student extends IEntity{
-    private String sid;
-    private String name;
-    private int did;
+public class Account  extends IEntity{
     private String username ;
+    private String password ;
+    private String role ;
+
+
 
     public String getUsername() {
         return username;
@@ -21,31 +22,22 @@ public class Student extends IEntity{
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
     
-    
-
-    public String getSid() {
-        return sid;
-    }
-
-    public void setSid(String sid) {
-        this.sid = sid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getDid() {
-        return did;
-    }
-
-    public void setDid(int did) {
-        this.did = did;
-    }
     
 }

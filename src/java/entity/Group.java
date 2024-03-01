@@ -11,8 +11,8 @@ package entity;
 public class Group extends IEntity{
     private int gid;
     private String gname ;
-    private String subid ;
-    private String PIC;
+    private Subject subid ;
+    private Lecturer PIC;
 
     public int getGid() {
         return gid;
@@ -30,20 +30,22 @@ public class Group extends IEntity{
         this.gname = gname;
     }
 
-    public String getSubid() {
+    public Subject getSubid() {
         return subid;
     }
 
-    public void setSubid(String subid) {
+    public void setSubid(Subject subid) {
         this.subid = subid;
     }
 
-    public String getPIC() {
+    public Lecturer getPIC() {
         return PIC;
     }
 
-    public void setPIC(String PIC) {
+    public void setPIC(Lecturer PIC) {
         this.PIC = PIC;
     }
+
+    
     
 }
