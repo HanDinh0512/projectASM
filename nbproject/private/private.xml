@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/src/java/dal/AttendanceDBContext.java</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/src/java/entity/Attendance.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/src/java/controller/timetable/StudentTimeTableController.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/src/java/dal/SessionDBContext.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/src/java/dal/GroupDBContext.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/src/java/entity/Session.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/src/java/entity/Group.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/web/view/timetable/studenttimetable.jsp</file>
         </group>
     </open-files>
 </project-private>

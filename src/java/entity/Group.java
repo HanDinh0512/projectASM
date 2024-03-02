@@ -4,6 +4,8 @@
  */
 package entity;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author admin
@@ -11,8 +13,19 @@ package entity;
 public class Group extends IEntity{
     private int gid;
     private String gname ;
-    private Subject subid ;
+    private Subject subject ;
     private Lecturer PIC;
+    private ArrayList<Student> students ;
+
+    public ArrayList<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(ArrayList<Student> students) {
+        this.students = students;
+    }
+    
+    
 
     public int getGid() {
         return gid;
@@ -30,12 +43,12 @@ public class Group extends IEntity{
         this.gname = gname;
     }
 
-    public Subject getSubid() {
-        return subid;
+    public Subject getSubject() {
+        return subject;
     }
 
-    public void setSubid(Subject subid) {
-        this.subid = subid;
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 
     public Lecturer getPIC() {

@@ -58,22 +58,22 @@ public class AttendanceDBContext extends DBContext<Attendance> {
 
                 gr.setGid(rs.getInt("gid"));
                 gr.setGname(rs.getString("gname"));
-                gr.setSubid(sub);
+                gr.setSubject(sub);
 
                 ti.setTid(rs.getInt("tid"));
 
                 le.setLid(rs.getString("lid"));
                 le.setLname(rs.getString("lname"));
 
-                ses.setGid(gr);
-                ses.setTid(ti);
+                ses.setGroup(gr);
+                ses.setSlot(ti);
                 ses.setDate(rs.getDate("date"));
                 ses.setRoom(r);
-                ses.setLid(le);
+                ses.setLecturer(le);
                 ses.setIsTaken(rs.getBoolean("isTaken"));
                 
-                att.setSesid(ses);
-                att.setSid(stu);
+                att.setSes(ses);
+                att.setStudent(stu);
                 att.setDescription(rs.getString("description"));
                 att.setIsPresent(rs.getBoolean("isPresent"));
                 att.setTime(rs.getString("time"));

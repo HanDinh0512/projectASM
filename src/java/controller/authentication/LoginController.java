@@ -81,7 +81,7 @@ public class LoginController extends HttpServlet {
                 //response.getWriter().println("student");
             }
             else{
-                response.sendRedirect("lecturerhome");
+                response.sendRedirect(request.getContextPath()+"/lecturerhome");
                 //response.getWriter().println("lecturer");
             }
             

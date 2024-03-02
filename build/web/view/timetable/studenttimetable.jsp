@@ -36,13 +36,13 @@
                     <c:forEach items="${requestScope.dates}" var="d">
                         <td>
                             <c:forEach items="${requestScope.attendances}" var="att">
-                                <c:if test="${att.sesid.date eq d and att.sesid.tid.tid eq slot.tid}">
-                                    ${att.sesid.gid.gname} - ${att.sesid.gid.subid.subname} <br/>
-                                    <c:if test="${att.sesid.isTaken}">
+                                <c:if test="${att.ses.date eq d and att.ses.slot.tid eq slot.tid}">
+                                    ${att.ses.group.gname} - ${att.ses.group.subject.subname} <br/>
+                                    <c:if test="${att.ses.isTaken}">
                                         <c:if test="${att.isPresent}">Present</c:if>
                                         <c:if test="${!att.isPresent}">Absent</c:if>
                                     </c:if>
-                                    <c:if test="${!att.sesid.isTaken}">
+                                    <c:if test="${!att.ses.isTaken}">
                                         Not Yet
                                     </c:if>
                                 </c:if>

@@ -1,6 +1,6 @@
 <%-- 
-    Document   : studentTimeTable
-    Created on : Feb 29, 2024, 2:09:57 AM
+    Document   : lecturertimetable
+    Created on : Mar 2, 2024, 3:15:14 PM
     Author     : admin
 --%>
 
@@ -14,8 +14,8 @@
         <title>JSP Page</title>
     </head>
     <body>
-        
-        <form action="studenttimetable" method="GET">
+        <h1>${requestScope.test}</h1>
+        <form action="lecturertimetable" method="GET">
             <input type="hidden" value="${param.id}" name="id"/>
             From: <input type="date" name="from" value="${requestScope.from}"/> -
             <input type="date" name="to" value="${requestScope.to}"/>
@@ -35,16 +35,11 @@
                     <td>${slot.tid}</td>
                     <c:forEach items="${requestScope.dates}" var="d">
                         <td>
-                            <c:forEach items="${requestScope.attendances}" var="att">
-                                <c:if test="${att.ses.date eq d and att.ses.slot.tid eq slot.tid}">
-                                    ${att.ses.group.gname} - ${att.ses.group.subject.subname} <br/>
-                                    <c:if test="${att.ses.isTaken}">
-                                        <c:if test="${att.isPresent}">Present</c:if>
-                                        <c:if test="${!att.isPresent}">Absent</c:if>
-                                    </c:if>
-                                    <c:if test="${!att.ses.isTaken}">
-                                        Not Yet
-                                    </c:if>
+                            <c:forEach items="${requestScope.sessions}" var="ses">
+                                <c:if test="${ses.date eq d and ses.slot.tid eq slot.tid}">
+                                    ${ses.group.gname} - ${ses.group.subject.subname} - ${ses.room.rnumber} -${ses.isTaken}<br/>
+                                        <c:if test="${ses.isTaken}">Edit</c:if>
+                                        <c:if test="${!ses.isTaken}">Take</c:if>
                                 </c:if>
                             </c:forEach>
                         </td>

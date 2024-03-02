@@ -12,10 +12,10 @@ import java.sql.*;
  */
 public class Session extends IEntity{
     private int sesid;
-    private Group gid;
-    private Lecturer lid ;
+    private Group group;
+    private Lecturer lecturer ;
     private Room room ;
-    private TimeSlot tid;
+    private TimeSlot slot;
     private Date date;
     private boolean isTaken;
     private String term ;
@@ -36,20 +36,20 @@ public class Session extends IEntity{
         this.sesid = sesid;
     }
 
-    public Group getGid() {
-        return gid;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setGid(Group gid) {
-        this.gid = gid;
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
-    public Lecturer getLid() {
-        return lid;
+    public Lecturer getLecturer() {
+        return lecturer;
     }
 
-    public void setLid(Lecturer lid) {
-        this.lid = lid;
+    public void setLecturer(Lecturer lecturer) {
+        this.lecturer = lecturer;
     }
 
     public Room getRoom() {
@@ -60,12 +60,12 @@ public class Session extends IEntity{
         this.room = room;
     }
 
-    public TimeSlot getTid() {
-        return tid;
+    public TimeSlot getSlot() {
+        return slot;
     }
 
-    public void setTid(TimeSlot tid) {
-        this.tid = tid;
+    public void setSlot(TimeSlot slot) {
+        this.slot = slot;
     }
 
   

@@ -13,8 +13,8 @@ package entity;
  */
 public class Attendance extends IEntity{
     private int aid;
-    private Session sesid;
-    private Student sid ;
+    private Session ses;
+    private Student student ;
     private boolean isPresent;
     private String description ;
     private String time;
@@ -27,20 +27,20 @@ public class Attendance extends IEntity{
         this.aid = aid;
     }
 
-    public Session getSesid() {
-        return sesid;
+    public Session getSes() {
+        return ses;
     }
 
-    public void setSesid(Session sesid) {
-        this.sesid = sesid;
+    public void setSes(Session ses) {
+        this.ses = ses;
     }
 
-    public Student getSid() {
-        return sid;
+    public Student getStudent() {
+        return student;
     }
 
-    public void setSid(Student sid) {
-        this.sid = sid;
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
    

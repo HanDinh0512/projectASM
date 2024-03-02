@@ -11,6 +11,17 @@ package entity;
 public class Lecturer extends IEntity{
     private String lid;
     private String lname ;
+    private String username ;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    
+    
 
     public String getLid() {
         return lid;
