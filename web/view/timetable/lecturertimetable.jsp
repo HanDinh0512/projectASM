@@ -37,9 +37,13 @@
                         <td>
                             <c:forEach items="${requestScope.sessions}" var="ses">
                                 <c:if test="${ses.date eq d and ses.slot.tid eq slot.tid}">
-                                    ${ses.group.gname} - ${ses.group.subject.subname} - ${ses.room.rnumber} -${ses.isTaken}<br/>
-                                        <c:if test="${ses.isTaken}">Edit</c:if>
-                                        <c:if test="${!ses.isTaken}">Take</c:if>
+                                    ${ses.group.gname} - ${ses.group.subject.subname} - ${ses.room.rnumber}<br/>
+                                        <c:if test="${ses.isTaken}">
+                                            <a href ="attendance?id=${ses.sesid}">Edit</a>
+                                        </c:if>
+                                        <c:if test="${!ses.isTaken}">
+                                            <a href ="attendance?id=${ses.sesid}">Take</a>
+                                        </c:if>
                                 </c:if>
                             </c:forEach>
                         </td>

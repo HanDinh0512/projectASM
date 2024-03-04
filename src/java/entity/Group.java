@@ -16,7 +16,17 @@ public class Group extends IEntity{
     private Subject subject ;
     private Lecturer PIC;
     private ArrayList<Student> students ;
+    private String term ;
 
+    public String getTerm() {
+        return term;
+    }
+
+    public void setTerm(String term) {
+        this.term = term;
+    }
+    
+    
     public ArrayList<Student> getStudents() {
         return students;
     }

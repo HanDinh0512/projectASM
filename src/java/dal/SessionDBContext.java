@@ -7,6 +7,7 @@ package dal;
 import entity.Group;
 import entity.Room;
 import entity.Session;
+import entity.Student;
 import entity.Subject;
 import entity.TimeSlot;
 import java.sql.*;
@@ -31,32 +32,74 @@ public class SessionDBContext extends DBContext<Session> {
             stm.setDate(2, from);
             stm.setDate(3, to);
             ResultSet rs = stm.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
                 Session ses = new Session();
                 Group g = new Group();
                 Room r = new Room();
                 Subject sub = new Subject();
                 TimeSlot time = new TimeSlot();
-                
+
                 g.setGid(rs.getInt("gid"));
                 g.setGname(rs.getString("gname"));
                 sub.setSubname(rs.getString("subid"));
                 r.setRnumber(rs.getString("room"));
                 time.setTid(rs.getInt("tid"));
                 g.setSubject(sub);
-                
+
                 ses.setSesid(rs.getInt("sesid"));
                 ses.setDate(rs.getDate("date"));
                 ses.setGroup(g);
                 ses.setSlot(time);
                 ses.setIsTaken(rs.getBoolean("isTaken"));
                 ses.setRoom(r);
-                
+
                 sessions.add(ses);
             }
         } catch (SQLException ex) {
             Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return sessions;
+    }
+
+    public ArrayList<Student> getStudentBySesID(int sesid) {
+        ArrayList<Student> students = new ArrayList<>();
+        try {
+            String sql = "select ses.sesid, stu.sid, stu.name\n"
+                    + "from session  ses inner join Enrollment en on en.gid = ses.gid\n"
+                    + "				  inner join Student stu on stu.sid = en.sid\n"
+                    + "where ses.sesid = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, sesid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Student s = new Student();
+                s.setSid(rs.getString("sid"));
+                s.setName(rs.getString("name"));
+
+                students.add(s);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return students;
+    }
+
+    public boolean checkIsTakenBySesID(int sesID) {
+        boolean check = false;
+        try {
+            String sql = "select ses.isTaken\n"
+                    + "from session ses \n"
+                    + "where ses.sesid =?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, sesID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {                
+                check = rs.getBoolean("isTaken");
+                return check;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return check;
     }
 }

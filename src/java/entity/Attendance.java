@@ -4,6 +4,8 @@
  */
 package entity;
 
+import java.util.Date;
+
 
 
 
@@ -17,7 +19,7 @@ public class Attendance extends IEntity{
     private Student student ;
     private boolean isPresent;
     private String description ;
-    private String time;
+    private Date time;
 
     public int getAid() {
         return aid;
@@ -60,13 +62,15 @@ public class Attendance extends IEntity{
         this.description = description;
     }
 
-    public String getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Date time) {
         this.time = time;
     }
+
+    
 
     
 }

@@ -64,7 +64,7 @@ public class StudentTimeTableController extends BaseRequiredAuthenticationContro
         TimeSlotDBContext timeDB = new TimeSlotDBContext();
         ArrayList<TimeSlot> slots = timeDB.list();
         AttendanceDBContext attDB = new AttendanceDBContext();
-        ArrayList<Attendance> attendances = attDB.getAttendances(sid, from, to);
+        ArrayList<Attendance> attendances = attDB.getAttendancesForStudent(sid, from, to);
         
         req.setAttribute("slots", slots);
         req.setAttribute("dates", dates);

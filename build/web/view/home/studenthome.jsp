@@ -43,7 +43,8 @@
     <div class="container">
         <h1>Welcome to Student Home</h1>
         <p>This is a beautiful student home page.</p>
-        <a href="<%=request.getContextPath()%>/studenttimetable?id=${requestScope.studentid}" class="button">View Timetable</a>
+        <a href="<%=request.getContextPath()%>/studenttimetable?id=${requestScope.studentid}" class="button">View Timetable</a><br/>
+        <a href="<%=request.getContextPath()%>/studentgrade?id=${requestScope.studentid}" class="button">View Timetable</a><br/>
     </div>
 </body>
 </html>

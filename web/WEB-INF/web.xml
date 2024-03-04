@@ -20,6 +20,14 @@
         <servlet-name>LecturerTimeTableController</servlet-name>
         <servlet-class>controller.timetable.LecturerTimeTableController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetAttendance</servlet-name>
+        <servlet-class>controller.attendance.GetAttendance</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StudentGradeController</servlet-name>
+        <servlet-class>controller.grade.StudentGradeController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -39,5 +47,13 @@
     <servlet-mapping>
         <servlet-name>LecturerTimeTableController</servlet-name>
         <url-pattern>/lecturertimetable</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetAttendance</servlet-name>
+        <url-pattern>/attendance</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentGradeController</servlet-name>
+        <url-pattern>/studentgrade</url-pattern>
     </servlet-mapping>
 </web-app>
