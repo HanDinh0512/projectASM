@@ -13,7 +13,18 @@ public class Grade {
     private Assessment assessment;
     private Group group;
     private Student student;
-    private float score;
+    private String score;
+    private String des ;
+
+    public String getDes() {
+        return des;
+    }
+
+    public void setDes(String des) {
+        this.des = des;
+    }
+    
+    
 
     public int getGradeid() {
         return gradeid;
@@ -47,13 +58,15 @@ public class Grade {
         this.student = student;
     }
 
-    public float getScore() {
+    public String getScore() {
         return score;
     }
 
-    public void setScore(float score) {
+    public void setScore(String score) {
         this.score = score;
     }
+
+    
     
     
 }

@@ -44,6 +44,8 @@
         <h1>Welcome to lecturer Home</h1>
         <p>This is a beautiful lecturer home page.</p>
         <a href="<%=request.getContextPath()%>/lecturertimetable?id=${requestScope.lecturerid}" class="button">View Timetable</a>
+        <br/>
+        <a href="<%=request.getContextPath()%>/takegrade?id=${requestScope.lecturerid}" class="button">Grade</a>
     </div>
     </body>
 </html>

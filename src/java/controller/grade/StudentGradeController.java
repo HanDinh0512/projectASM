@@ -6,13 +6,22 @@
 package controller.grade;
 
 import controller.authentication.BaseRequiredAuthenticationController;
+import dal.GradeDBContext;
+import dal.SubjectDBContext;
+import dal.TermDBContext;
+import dal.TotalCourseDBContext;
 import entity.Account;
+import entity.Grade;
+import entity.Subject;
+import entity.Term;
+import entity.TotalCourse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 /**
  *
@@ -27,7 +36,32 @@ public class StudentGradeController extends BaseRequiredAuthenticationController
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+        String sid = req.getParameter("id");
+        String termid = req.getParameter("term");
+        String subid = req.getParameter("subid");
+        TermDBContext tdb = new TermDBContext();
+        ArrayList<Term> term = tdb.getTerm(sid);
+        ArrayList<Subject> subjects = new ArrayList<>();
+        SubjectDBContext sdb = new SubjectDBContext();
+        GradeDBContext gdb = new GradeDBContext();
+        TotalCourseDBContext todb = new TotalCourseDBContext();
+        if (termid!=null) {
+            subjects = sdb.getSubjects(sid, termid);
+            req.setAttribute("termid", termid);
+        }
         
+        if(subid!=null){
+            ArrayList<Grade> grades = gdb.getGradesBySidAndTermAndSub(sid, termid, subid);
+            TotalCourse totalCourse = todb.getTotalCourse(sid, subid, termid);
+            req.setAttribute("totalcourse", totalCourse);
+            req.setAttribute("grades", grades);
+            req.setAttribute("subid", subid);
+        }
+        
+        req.setAttribute("sid", sid);
+        req.setAttribute("term", term);
+        req.setAttribute("subjects", subjects);
+        req.getRequestDispatcher("view/mark/studentmark.jsp").forward(req, resp);
     }
    
   
