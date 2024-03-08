@@ -25,11 +25,11 @@ public class GradeDBContext extends DBContext<Grade> {
     public ArrayList<Grade> getGradesBySidAndTermAndSub(String sid, String term, String subid) {
         ArrayList<Grade> grades = new ArrayList<>();
         try {
-            String sql = "select stu.sid, stu.name as sname,ass.assid, g.term, ass.subid, ass.name, ass.weight, gr.score, gr.description\n"
+            String sql = "select stu.sid, stu.name as sname,ass.assid, g.term, ass.subid, ass.name, ass.weight,gr.isTaken, gr.score, gr.description\n"
                     + "from Assessment ass inner join [group] g on g.subid =ass.subid\n"
                     + "					inner join Enrollment en on en.gid = g.gid\n"
                     + "					inner join student stu on stu.sid = en.sid\n"
-                    + "					left join grade gr on ass.assid = gr.assid\n"
+                    + "					left join grade gr on ass.assid = gr.assid and gr.sid = stu.sid\n"
                     + "where en.sid = ? and g.term = ? and ass.subid = ?\n"
                     + "order by ass.assid";
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -52,7 +52,8 @@ public class GradeDBContext extends DBContext<Grade> {
                 ass.setSubject(sub);
                 ass.setName(rs.getString("name"));
                 ass.setWeight(rs.getFloat("weight"));
-
+                
+                gr.setIsTaken(rs.getBoolean("isTaken"));
                 gr.setAssessment(ass);
                 gr.setScore(rs.getString("score"));
                 gr.setStudent(stu);
@@ -66,6 +67,125 @@ public class GradeDBContext extends DBContext<Grade> {
         }
         return grades;
     }
-    
-    
+
+    public ArrayList<Grade> getGradesForLecturer(String lid, int gid, int assid) {
+        ArrayList<Grade> grades = new ArrayList<>();
+        try {
+            String sql = "select stu.sid, stu.name as sname, g.term,g.gid,ass.assid, ass.subid, ass.name, ass.weight, gr.score, gr.description\n"
+                    + "                    from Assessment ass inner join [group] g on g.subid =ass.subid\n"
+                    + "                    					inner join Enrollment en on en.gid = g.gid\n"
+                    + "                    					inner join student stu on stu.sid = en.sid\n"
+                    + "                    					left join grade gr on ass.assid = gr.assid and gr.sid = stu.sid\n"
+                    + "                    where g.gid = ? and ass.assid = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, gid);
+            stm.setInt(2, assid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Assessment ass = new Assessment();
+                Group g = new Group();
+                Grade gr = new Grade();
+                Student stu = new Student();
+                Subject sub = new Subject();
+
+                g.setGid(gid);
+                g.setTerm(rs.getString("term"));
+                sub.setSubname(rs.getString("subid"));
+                stu.setSid(rs.getString("sid"));
+                stu.setName(rs.getString("sname"));
+                ass.setAssid(assid);
+                ass.setName(rs.getString("name"));
+                ass.setSubject(sub);
+                ass.setWeight(rs.getFloat("weight"));
+
+                gr.setScore(rs.getString("score"));
+                gr.setDes(rs.getString("description"));
+                gr.setAssessment(ass);
+                gr.setStudent(stu);
+                gr.setGroup(g);
+
+                grades.add(gr);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(GradeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return grades;
+    }
+
+    public boolean checkIstakenGrade(String sid, int gid, int assid) {
+        boolean isTaken = false;
+        try {
+            String sql = "  select isTaken from grade \n"
+                    + "  where sid= ? and gid = ? and assid = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, sid);
+            stm.setInt(2, gid);
+            stm.setInt(3, assid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                isTaken = rs.getBoolean("isTaken");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(GradeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return isTaken;
+    }
+
+    public void insertNewGrade(String sid, int gid, int assid, String score, String des) {
+        try {
+            String sql = "INSERT INTO [dbo].[grade]\n"
+                    + "           ([assid]\n"
+                    + "           ,[sid]\n"
+                    + "           ,[score]\n"
+                    + "           ,[gid]\n"
+                    + "           ,[isTaken]\n"
+                    + "           ,[description])\n"
+                    + "     VALUES\n"
+                    + "           (?\n"
+                    + "           ,?\n"
+                    + "           ,?\n"
+                    + "           ,?\n"
+                    + "           ,?\n"
+                    + "           ,?)";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, assid);
+            stm.setString(2, sid);
+            stm.setString(3, score);
+            stm.setInt(4, gid);
+            if (score==null||score.isEmpty()) {
+                stm.setBoolean(5, false);               
+            }else{
+                stm.setBoolean(5, true);
+            }
+            stm.setString(6, des);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(GradeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void updateNewGrade(String sid, int gid, int assid, String score, String des) {
+        try {
+            String sql = "UPDATE [dbo].[grade]\n"
+                    + "   SET \n"
+                    + "      [score] = ?,\n"
+                    + "      [description] = ?, isTaken = ?\n"
+                    + " WHERE sid = ? and gid = ? and assid = ? ";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, score);
+            stm.setString(2, des);
+            if (score!=null) {
+                stm.setBoolean(3, true);
+            }else{
+                stm.setBoolean(3, false);
+            }
+            stm.setString(4, sid);
+            stm.setInt(5, gid);
+            stm.setInt(6, assid);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(GradeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }

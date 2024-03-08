@@ -5,6 +5,7 @@
 package dal;
 
 import entity.Group;
+import entity.Role;
 import entity.Subject;
 import entity.Term;
 import java.util.ArrayList;
@@ -20,8 +21,8 @@ public class main {
         return !currentDate.before(startDate) && !currentDate.after(endDate);
     }
     public static void main(String[] args) {
-        GroupDBContext gdb = new GroupDBContext();
-            Group g = gdb.getGroupByGid(1);
-        System.out.println(g.getGname());
+        RoleDBContext rdb = new RoleDBContext();
+            Role role = rdb.getRole("handg", "abc");
+            System.out.println(role.getName());
     }
 }

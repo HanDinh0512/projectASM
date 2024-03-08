@@ -6,12 +6,14 @@
 package controller.grade;
 
 import controller.authentication.BaseRequiredAuthenticationController;
+import controller.authentication.authorization.BaseRBACController;
 import dal.GradeDBContext;
 import dal.SubjectDBContext;
 import dal.TermDBContext;
 import dal.TotalCourseDBContext;
 import entity.Account;
 import entity.Grade;
+import entity.Role;
 import entity.Subject;
 import entity.Term;
 import entity.TotalCourse;
@@ -27,15 +29,15 @@ import java.util.ArrayList;
  *
  * @author admin
  */
-public class StudentGradeController extends BaseRequiredAuthenticationController {
+public class StudentGradeController extends BaseRBACController {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp, Account account, ArrayList<Role> roles) throws ServletException, IOException {
     
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account, ArrayList<Role> roles) throws ServletException, IOException {
         String sid = req.getParameter("id");
         String termid = req.getParameter("term");
         String subid = req.getParameter("subid");

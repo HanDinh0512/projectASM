@@ -6,8 +6,10 @@
 package controller.authentication;
 
 import dal.AccountDBContext;
+import dal.RoleDBContext;
 import dal.StudentDBContext;
 import entity.Account;
+import entity.Role;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -62,7 +64,8 @@ public class LoginController extends HttpServlet {
 
         AccountDBContext db = new AccountDBContext();
         Account account = db.getByUsernamePassword(username, password);
-
+        RoleDBContext rdb = new RoleDBContext();
+        Role r = rdb.getRole(username, password);
         if (account != null) {
             HttpSession session = request.getSession();
             session.setAttribute("account", account);
@@ -74,7 +77,7 @@ public class LoginController extends HttpServlet {
             response.addCookie(c_pass);
             response.addCookie(c_user);
             
-            if (account.getRole().equals("student")) {
+            if (r.getName().equals("student")) {
                 
                 response.sendRedirect(request.getContextPath()+"/studenthome");
                 //request.getRequestDispatcher("view/home/studenthome.jsp").forward(request, response);

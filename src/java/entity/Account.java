@@ -11,7 +11,6 @@ package entity;
 public class Account  extends IEntity{
     private String username ;
     private String password ;
-    private String role ;
 
 
 
@@ -31,13 +30,6 @@ public class Account  extends IEntity{
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
     
     
 }

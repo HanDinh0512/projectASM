@@ -15,6 +15,17 @@ public class Grade {
     private Student student;
     private String score;
     private String des ;
+    private Boolean isTaken ;
+
+    public Boolean getIsTaken() {
+        return isTaken;
+    }
+
+    public void setIsTaken(Boolean isTaken) {
+        this.isTaken = isTaken;
+    }
+    
+    
 
     public String getDes() {
         return des;

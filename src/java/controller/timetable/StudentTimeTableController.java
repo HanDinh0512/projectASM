@@ -5,10 +5,12 @@
 package controller.timetable;
 
 import controller.authentication.BaseRequiredAuthenticationController;
+import controller.authentication.authorization.BaseRBACController;
 import dal.AttendanceDBContext;
 import dal.TimeSlotDBContext;
 import entity.Account;
 import entity.Attendance;
+import entity.Role;
 import entity.TimeSlot;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,15 +24,15 @@ import util.DateTimeHelper;
  *
  * @author admin
  */
-public class StudentTimeTableController extends BaseRequiredAuthenticationController{
+public class StudentTimeTableController extends BaseRBACController{
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp, Account account, ArrayList<Role> roles) throws ServletException, IOException {
         
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account, ArrayList<Role> roles) throws ServletException, IOException {
         String sid  = req.getParameter("id");
         String raw_from = req.getParameter("from");
         String raw_to = req.getParameter("to");

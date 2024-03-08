@@ -6,10 +6,12 @@
 package controller.attendance;
 
 import controller.authentication.BaseRequiredAuthenticationController;
+import controller.authentication.authorization.BaseRBACController;
 import dal.AttendanceDBContext;
 import dal.SessionDBContext;
 import entity.Account;
 import entity.Attendance;
+import entity.Role;
 import entity.Session;
 import entity.Student;
 import java.io.IOException;
@@ -24,10 +26,10 @@ import java.util.ArrayList;
  *
  * @author admin
  */
-public class GetAttendance extends BaseRequiredAuthenticationController {
+public class GetAttendance extends BaseRBACController {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp, Account account, ArrayList<Role> roles) throws ServletException, IOException {
         int sesid = Integer.parseInt(req.getParameter("id"));
         AttendanceDBContext attDB = new AttendanceDBContext();
         SessionDBContext sesDB = new SessionDBContext();
@@ -58,7 +60,7 @@ public class GetAttendance extends BaseRequiredAuthenticationController {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account, ArrayList<Role> roles) throws ServletException, IOException {
         int sesid = Integer.parseInt(req.getParameter("id"));
         AttendanceDBContext attDB = new AttendanceDBContext();
         ArrayList<Attendance> attendances = attDB.getAttendancesForLecturer(sesid);

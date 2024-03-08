@@ -3,20 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/src/java/dal/AttendanceDBContext.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/src/java/controller/attendance/GetAttendance.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/web/view/timetable/lecturertimetable.jsp</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/web/view/home/studenthome.jsp</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/src/java/entity/Attendance.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/web/view/attendance/takeattendance.jsp</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/src/java/entity/Assessment.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/src/java/util/DateTimeHelper.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/src/java/entity/Grade.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/src/java/entity/Session.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/src/java/dal/main.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/src/java/entity/Student.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/src/java/dal/SessionDBContext.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/src/java/controller/grade/StudentGradeController.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/src/java/dal/GradeItemTakenDBContext.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/web/view/mark/takemark.jsp</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/src/java/controller/grade/LecturerTakeGradeController.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/web/view/mark/studentmark.jsp</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/PRJ301-Project/src/java/dal/GradeDBContext.java</file>
         </group>
     </open-files>
 </project-private>
