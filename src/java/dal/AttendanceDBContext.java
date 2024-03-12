@@ -22,7 +22,8 @@ import java.sql.*;
  * @author admin
  */
 public class AttendanceDBContext extends DBContext<Attendance> {
-
+    
+    
     public ArrayList<Attendance> getAttendancesForStudent(String sid, Date from, Date to) {
         ArrayList<Attendance> attendancesBySID = new ArrayList<>();
         try {

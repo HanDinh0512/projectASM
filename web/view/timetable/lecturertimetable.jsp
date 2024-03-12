@@ -14,7 +14,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>${requestScope.test}</h1>
+
         <form action="lecturertimetable" method="GET">
             <input type="hidden" value="${param.id}" name="id"/>
             From: <input type="date" name="from" value="${requestScope.from}"/> -
@@ -38,12 +38,28 @@
                             <c:forEach items="${requestScope.sessions}" var="ses">
                                 <c:if test="${ses.date eq d and ses.slot.tid eq slot.tid}">
                                     ${ses.group.gname} - ${ses.group.subject.subname} - ${ses.room.rnumber}<br/>
-                                        <c:if test="${ses.isTaken}">
-                                            <a href ="attendance?id=${ses.sesid}">Edit</a>
-                                        </c:if>
-                                        <c:if test="${!ses.isTaken}">
-                                            <a href ="attendance?id=${ses.sesid}">Take</a>
-                                        </c:if>
+                                    <c:if test="${ses.isTaken}">
+                                        <form action="attendance" method="GET">
+                                            <input type="hidden" value="${ses.sesid}" name="id"/>
+                                            <input type="hidden" value="${ses.group.subject.subname}" name ="sub"/>
+                                            <input type="hidden" value="${ses.date}" name ="date"/>
+                                            <input type="hidden" value="${ses.slot.tid}" name ="slot"/>
+                                            <input type="submit" value="Edit">
+                                        </form>
+                                            <%--<a href ="attendance?id=${ses.sesid}">Edit</a>
+                                        <input type="hidden" value="${ses.group.subject.subname}" name ="sub"/>
+                                        <input type="hidden" value="${ses.date}" name ="date"/>
+<input type="hidden" value="${ses.slot.tid}" name ="slot"/>--%>
+                                    </c:if>
+                                    <c:if test="${!ses.isTaken}">
+                                        <form action="attendance" method="GET">
+                                            <input type="hidden" value="${ses.sesid}" name="id"/>
+                                            <input type="hidden" value="${ses.group.subject.subname}" name ="sub"/>
+                                            <input type="hidden" value="${ses.date}" name ="date"/>
+                                            <input type="hidden" value="${ses.slot.tid}" name ="slot"/>
+                                            <input type="submit" value="Take">
+                                        </form>
+                                    </c:if>
                                 </c:if>
                             </c:forEach>
                         </td>

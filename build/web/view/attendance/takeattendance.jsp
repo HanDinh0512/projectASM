@@ -14,9 +14,12 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>${requestScope.test}</h1>
+
         <form action="attendance" method="POST">
-            <input type="hidden" name="id" value="${param.id}" />
+            <input type="hidden" name="id" value="${requestScope.id}" />
+            <input type="hidden" value="${requestScope.sub}" name ="sub"/>
+            <input type="hidden" value="${requestScope.date}" name ="date"/>
+            <input type="hidden" value="${requestScope.slot}" name ="slot"/>
             <table border="1px">
                 <tr>
                     <td>Id</td>
@@ -26,22 +29,22 @@
                     <td>Time</td>
                 </tr>
                 <c:forEach items="${requestScope.atts}" var="a">
-                <tr>
-                    <td>${a.student.sid}</td>
-                    <td>${a.student.name}</td>
-                    <td>
-                        <input type="radio" 
-                               ${!a.isPresent?"checked=\"checked\"":""}
-                               name="present${a.student.sid}" value="no"/> No
-                        <input type="radio" 
-                               ${a.isPresent?"checked=\"checked\"":""}
-                               name="present${a.student.sid}" value="yes"/> Yes
-                    </td>
-                    <td>
-                        <input type="text" name="description${a.student.sid}" value="${a.description}"/>
-                    </td>
-                    <td>${a.time}</td>
-                </tr>    
+                    <tr>
+                        <td>${a.student.sid}</td>
+                        <td>${a.student.name}</td>
+                        <td>
+                            <input type="radio" 
+                                   ${!a.isPresent?"checked=\"checked\"":""}
+                                   name="present${a.student.sid}" value="no"/> No
+                            <input type="radio" 
+                                   ${a.isPresent?"checked=\"checked\"":""}
+                                   name="present${a.student.sid}" value="yes"/> Yes
+                        </td>
+                        <td>
+                            <input type="text" name="description${a.student.sid}" value="${a.description}"/>
+                        </td>
+                        <td>${a.time}</td>
+                    </tr>    
                 </c:forEach>
             </table>
             <input type="submit" value="Save"/>

@@ -13,6 +13,17 @@ public class Student extends IEntity{
     private String name;
     private int did;
     private String username ;
+    private String email ;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+    
 
     public String getUsername() {
         return username;

@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Student Home</title>
+        <title>FAP FPT University</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -37,15 +37,23 @@
             .button:hover {
                 background-color: #0056b3;
             }
+            .logout {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+            }
         </style>
     </head>
     <body>
+        <input type="button" value="Logout" class="button logout" onclick="window.location.href = 'login'"/>
         <div class="container">
-        <h1>Welcome to lecturer Home</h1>
-        <p>This is a beautiful lecturer home page.</p>
-        <a href="<%=request.getContextPath()%>/lecturertimetable?id=${requestScope.lecturerid}" class="button">View Timetable</a>
-        <br/>
-        <a href="<%=request.getContextPath()%>/takegrade?id=${requestScope.lecturerid}" class="button">Grade</a>
-    </div>
+            <h1>Welcome to FAP FPT University</h1>
+            <p>This is a beautiful lecturer home page.</p>
+            <a href="<%=request.getContextPath()%>/lecturertimetable?id=${requestScope.lecturerid}" class="button">View Timetable</a>
+            <br/>
+            <br/>
+            <a href="<%=request.getContextPath()%>/takegrade?id=${requestScope.lecturerid}" class="button">Grade</a>
+        </div>
     </body>
+
 </html>

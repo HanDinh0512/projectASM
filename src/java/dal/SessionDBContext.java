@@ -64,7 +64,7 @@ public class SessionDBContext extends DBContext<Session> {
     public ArrayList<Student> getStudentBySesID(int sesid) {
         ArrayList<Student> students = new ArrayList<>();
         try {
-            String sql = "select ses.sesid, stu.sid, stu.name\n"
+            String sql = "select ses.sesid, stu.sid, stu.name, stu.email\n"
                     + "from session  ses inner join Enrollment en on en.gid = ses.gid\n"
                     + "				  inner join Student stu on stu.sid = en.sid\n"
                     + "where ses.sesid = ?";
@@ -75,7 +75,7 @@ public class SessionDBContext extends DBContext<Session> {
                 Student s = new Student();
                 s.setSid(rs.getString("sid"));
                 s.setName(rs.getString("name"));
-
+                s.setEmail(rs.getString("email"));
                 students.add(s);
             }
         } catch (SQLException ex) {
