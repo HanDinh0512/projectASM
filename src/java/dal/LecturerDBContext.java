@@ -29,4 +29,22 @@ public class LecturerDBContext extends DBContext<Lecturer>{
         }
         return null;
     }
+    
+    public boolean checkLecturerIDByAccount(Account account, String lid) {
+        try {
+            String sql = "select lid\n"
+                    + "from lecturer\n"
+                    + "where username = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1 ,account.getUsername());
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {                
+                String realSID = rs.getString("lid");
+                return realSID.equals(lid);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LecturerDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
+    }
 }

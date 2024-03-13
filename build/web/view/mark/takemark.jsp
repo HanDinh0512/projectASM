@@ -51,11 +51,39 @@
                 cursor: pointer;
                 border-radius: 5px;
             }
+            .button1 {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 10px 20px;
+                font-size: 16px;
+                cursor: pointer;
+                text-align: center;
+                text-decoration: none;
+                outline: none;
+                color: #fff;
+                background-color: #007bff;
+                border: none;
+                border-radius: 5px;
+                box-shadow: 0 5px #0069d9;
+            }
+
+            .button1:hover {
+                background-color: #0056b3;
+            }
+
+            .button1:active {
+                background-color: #0056b3;
+                box-shadow: 0 3px #004286;
+                transform: translateY(2px);
+            }
         </style>
     </head>
     <body>
         <h1>Grade Management</h1>
-
+        <form action="lecturerhome">
+            <button class="button1">Home</button>
+        </form>
         <div class="container">
             <div>                
                 <table>

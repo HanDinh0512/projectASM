@@ -25,7 +25,7 @@ public class TotalCourseDBContext extends DBContext<TotalCourse> {
             stm.setString(2, subid);
             stm.setString(3, term);
             ResultSet rs = stm.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
                 t.setStatus(rs.getString("status"));
                 t.setTotal(rs.getString("total"));
             }
@@ -33,5 +33,20 @@ public class TotalCourseDBContext extends DBContext<TotalCourse> {
             Logger.getLogger(TotalCourseDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return t;
+    }
+
+    public void changeStatusByAbsent(String sid, String subid, String term) {
+        try {
+            String sql = "update totalcourse\n"
+                    + "set status = 'NOT PASS'\n"
+                    + "where sid = ? and subid = ? and term = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, sid);
+            stm.setString(2, subid);
+            stm.setString(3, term);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(TotalCourseDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

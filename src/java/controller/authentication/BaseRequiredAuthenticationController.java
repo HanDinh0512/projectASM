@@ -44,6 +44,8 @@ public abstract class BaseRequiredAuthenticationController extends HttpServlet {
               {
                   AccountDBContext db = new AccountDBContext();
                   account = db.getByUsernamePassword(username, password);
+                  account.setUsername(username);
+                  account.setPassword(password);
                   req.getSession().setAttribute("account", account);
               }
           }

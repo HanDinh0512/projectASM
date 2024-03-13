@@ -8,6 +8,7 @@ package controller.grade;
 import controller.authentication.BaseRequiredAuthenticationController;
 import controller.authentication.authorization.BaseRBACController;
 import dal.GradeDBContext;
+import dal.StudentDBContext;
 import dal.SubjectDBContext;
 import dal.TermDBContext;
 import dal.TotalCourseDBContext;
@@ -39,6 +40,8 @@ public class StudentGradeController extends BaseRBACController {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account, ArrayList<Role> roles) throws ServletException, IOException {
         String sid = req.getParameter("id");
+        StudentDBContext stdb = new StudentDBContext();
+        if (stdb.checkStudentIDByAccount(account, sid)) {
         String termid = req.getParameter("term");
         String subid = req.getParameter("subid");
         TermDBContext tdb = new TermDBContext();
@@ -64,6 +67,10 @@ public class StudentGradeController extends BaseRBACController {
         req.setAttribute("term", term);
         req.setAttribute("subjects", subjects);
         req.getRequestDispatcher("view/mark/studentmark.jsp").forward(req, resp);
+            
+        }else{
+            req.getRequestDispatcher("view/studentaccessdenied.jsp").forward(req, resp);
+        }
     }
    
   

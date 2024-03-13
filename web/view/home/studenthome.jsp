@@ -50,7 +50,8 @@
             <h1>Welcome to FAP FPT University</h1>
             <p>This is a beautiful student home page.</p>
             <a href="<%=request.getContextPath()%>/studenttimetable?id=${requestScope.studentid}" class="button">View Timetable</a><br/><br/>
-            <a href="<%=request.getContextPath()%>/studentgrade?id=${requestScope.studentid}" class="button">Mark Report</a><br/>
+            <a href="<%=request.getContextPath()%>/studentgrade?id=${requestScope.studentid}" class="button">Mark Report</a><br/><br/>
+            <a href="<%=request.getContextPath()%>/viewattend?id=${requestScope.studentid}" class="button">Attendance Report</a><br/><br/>
         </div>
     </body>
 

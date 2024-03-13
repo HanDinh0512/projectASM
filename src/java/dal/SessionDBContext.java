@@ -93,7 +93,7 @@ public class SessionDBContext extends DBContext<Session> {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, sesID);
             ResultSet rs = stm.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
                 check = rs.getBoolean("isTaken");
                 return check;
             }
@@ -101,5 +101,61 @@ public class SessionDBContext extends DBContext<Session> {
             Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return check;
+    }
+
+    public int countSession(Group group) {
+        int count = 0;
+        try {
+            String sql = "select count(*) as count\n"
+                    + "from session ses\n"
+                    + "where ses.gid =?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, group.getGid());
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt("count");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
+    }
+
+    public int getGroupBySesID(int sesid) {
+        int gid = 0;
+        try {
+            String sql = "select ses.gid\n"
+                    + "from session ses\n"
+                    + "where ses.sesid = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, sesid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                gid = rs.getInt("gid");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return gid;
+    }
+
+    public String getLecturerID(int sesid) {
+        String lid = null;
+        
+        try {
+            String sql = "select lid\n"
+                    + "from session\n"
+                    + "where sesid = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, sesid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {                
+                lid = rs.getString("lid");
+                return lid;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return lid;
     }
 }

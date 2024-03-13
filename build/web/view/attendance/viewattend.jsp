@@ -1,18 +1,16 @@
 <%-- 
-    Document   : studentmark
-    Created on : Mar 5, 2024, 2:08:55 AM
+    Document   : viewattend
+    Created on : Mar 12, 2024, 10:04:52 PM
     Author     : admin
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        <title>Student Grade</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -89,7 +87,7 @@
                     </tr>
                     <c:forEach items="${requestScope.term}" var="t">
                         <tr>
-                            <td><a href="studentgrade?id=${requestScope.sid}&term=${t.tid}">${t.tid}</a></td>
+                            <td><a href="viewattend?id=${requestScope.sid}&term=${t.tid}">${t.tid}</a></td>
                         </tr>
                     </c:forEach>
                 </table>
@@ -97,14 +95,14 @@
 
             <div class="table-container">
                 <c:if test="${not empty requestScope.termid}">
-                <h2>Subject</h2>
+                    <h2>Subject</h2>
                     <table>
                         <tr>
                             <th>Subject</th>
                         </tr>
                         <c:forEach items="${requestScope.subjects}" var="s">
                             <tr>
-                                <td><a href="studentgrade?id=${requestScope.sid}&term=${requestScope.termid}&subid=${s.subname}">${s.subname}</a></td>
+                                <td><a href="viewattend?id=${requestScope.sid}&term=${requestScope.termid}&subid=${s.subname}">${s.subname}</a></td>
                             </tr>
                         </c:forEach>
                     </table>
@@ -115,31 +113,38 @@
         <%-- Bảng Grade (nếu đã chọn Term và Subject) --%>
         <c:if test="${not empty requestScope.subid}">
             <div class="table-container">
-                <h2>Grade Information</h2>
+                <h2>Attendance Information</h2>
                 <table>
                     <tr>
-                        <th>Grade item</th>
-                        <th>Weight</th>
-                        <th>Score</th>
-                        <th>Description</th>
+                        <th>DATE</th>
+                        <th>SLOT</th>
+                        <th>ROOM</th>
+                        <th>LECTURER</th>
+                        <th>GROUP NAME</th>
+                        <th>STATUS</th>
+                        <th>COMMENT</th>
                     </tr>
-                    <c:forEach items="${requestScope.grades}" var="g">
+                    <c:forEach items="${requestScope.atts}" var="a">
                         <tr>
-                            <td>${g.assessment.name}</td>
-                            <td><fmt:formatNumber value="${g.assessment.weight}" type="number" pattern="#%" /></td>
-                            <td>${g.score}</td>
-                            <td>${g.des}</td>
+                            <td>${a.ses.date}</td>
+                            <td>${a.ses.slot.tid}</td>
+                            <td>${a.ses.room.rnumber}</td>
+                            <td>${a.ses.lecturer.lname}</td>
+                            <td>${a.ses.group.gname}</td>
+                            <td><c:if test="${a.ses.isTaken}">
+                                    <c:if test="${a.isPresent}">Present</c:if>
+                                    <c:if test="${!a.isPresent}">Absent</c:if>
+                                </c:if>
+                                <c:if test="${!a.ses.isTaken}">
+                                    Future
+                                </c:if></td>
+                            <td>${a.description}</td>
                         </tr>
                     </c:forEach>
+
                     <tr>
-                        <th>COURSE TOTAL</th>
-                        <th>AVERAGE</th>
-                        <th>${requestScope.totalcourse.total}</th>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <th>STATUS</th>
-                        <th>${requestScope.totalcourse.status}</th>
+
+                        <td colspan="7"><strong>ABSENT: ${requestScope.absentPercent}% ABSENT SO FAR (${requestScope.countAbsent} ABSENT ON TOTAL ${requestScope.totalSes}).</strong></td>                    
                     </tr>
                 </table>
 

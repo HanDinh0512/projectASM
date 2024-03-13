@@ -22,8 +22,7 @@ import java.sql.*;
  * @author admin
  */
 public class AttendanceDBContext extends DBContext<Attendance> {
-    
-    
+
     public ArrayList<Attendance> getAttendancesForStudent(String sid, Date from, Date to) {
         ArrayList<Attendance> attendancesBySID = new ArrayList<>();
         try {
@@ -87,12 +86,75 @@ public class AttendanceDBContext extends DBContext<Attendance> {
         }
         return attendancesBySID;
     }
+    public ArrayList<Attendance> getAttendancesForView(String sid,String subid, String term) {
+        ArrayList<Attendance> attendancesBySID = new ArrayList<>();
+        try {
+            String sql = "select ses.sesid, ses.lid, ses.room,ses.date, ses.isTaken, en.sid, \n"
+                    + "                    g.gid, g.gname, g.subid, t.tid, \n"
+                    + "                    l.lname, att.isPresent, att.description, att.time\n"
+                    + "                    from Enrollment en\n"
+                    + "                    inner join session ses on en.gid = ses.gid\n"
+                    + "                    inner join [group] g on g.gid = ses.gid\n"
+                    + "                    inner join timeslot t on t.tid = ses.tid\n"
+                    + "                    inner join lecturer l on l.lid = ses.lid\n"
+                    + "					left join attendance att on en.sid = att.sid and ses.sesid = att.sesid\n"
+                    + "                    where en.sid = ? and g.subid = ? and g.term = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, sid);
+            stm.setString(2, subid);
+            stm.setString(3, term);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Attendance att = new Attendance();
+                Session ses = new Session();
+                Group gr = new Group();
+                TimeSlot ti = new TimeSlot();
+                Lecturer le = new Lecturer();
+                Room r = new Room();
+                Student stu = new Student();
+                Subject sub = new Subject();
+
+                sub.setSubname(rs.getString("subid"));
+
+                r.setRnumber(rs.getString("room"));
+
+                stu.setSid(sid);
+
+                gr.setGid(rs.getInt("gid"));
+                gr.setGname(rs.getString("gname"));
+                gr.setSubject(sub);
+
+                ti.setTid(rs.getInt("tid"));
+
+                le.setLid(rs.getString("lid"));
+                le.setLname(rs.getString("lname"));
+
+                ses.setGroup(gr);
+                ses.setSlot(ti);
+                ses.setDate(rs.getDate("date"));
+                ses.setRoom(r);
+                ses.setLecturer(le);
+                ses.setIsTaken(rs.getBoolean("isTaken"));
+
+                att.setSes(ses);
+                att.setStudent(stu);
+                att.setDescription(rs.getString("description"));
+                att.setIsPresent(rs.getBoolean("isPresent"));
+                att.setTime(rs.getTimestamp("time"));
+
+                attendancesBySID.add(att);
+            }
+        } catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(AttendanceDBContext.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        return attendancesBySID;
+    }
 
     public ArrayList<Attendance> getAttendancesForLecturer(int sesid) {
         ArrayList<Attendance> attendances = new ArrayList<>();
         try {
             String sql = "SELECT \n"
-                    + "                    s.sid,s.name,\n"
+                    + "                    s.sid,s.name,g.gid,\n"
                     + "                    a.aid,a.description,a.isPresent,a.time\n"
                     + "                    FROM Student s INNER JOIN Enrollment e ON s.sid = e.sid\n"
                     + "                    					INNER JOIN [group] g ON g.gid = e.gid\n"
@@ -106,7 +168,10 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                 Attendance att = new Attendance();
                 Session ses = new Session();
                 Student stu = new Student();
-
+                Group g = new Group();
+                
+                g.setGid(rs.getInt("gid"));
+                ses.setGroup(g);
                 att.setAid(rs.getInt("aid"));
                 att.setDescription(rs.getString("description"));
                 att.setTime(rs.getTimestamp("time"));
@@ -114,7 +179,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
 
                 stu.setSid(rs.getString("sid"));
                 stu.setName(rs.getString("name"));
-
+                att.setSes(ses);
                 att.setStudent(stu);
                 attendances.add(att);
             }
@@ -192,6 +257,26 @@ public class AttendanceDBContext extends DBContext<Attendance> {
         } catch (SQLException ex) {
             java.util.logging.Logger.getLogger(AttendanceDBContext.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        
+
+    }
+
+    public int countAbsent(String sid, Group group) {
+        int count = 0;
+        try {
+            String sql = "select COUNT(a.isPresent) as count\n"
+                    + "from attendance a inner join session ses on a.sesid = ses.sesid\n"
+                    + "\n"
+                    + "where a.sid = ? and ses.gid = ? and a.isPresent = 0";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, sid);
+            stm.setInt(2, group.getGid());
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {                
+                count = rs.getInt("count");
+            }
+        } catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(AttendanceDBContext.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        return count;
     }
 }
