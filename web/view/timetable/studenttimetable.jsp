@@ -65,7 +65,7 @@
         <form action="studenthome">
             <button class="button1">Home</button>
         </form>
-        <form action="studenttimetable" method="GET">
+        <form action="studenttimetable" method="POST">
         <input type="hidden" value="${param.id}" name="id"/>
         From: <input type="date" name="from" value="${requestScope.from}"/> -
         <input type="date" name="to" value="${requestScope.to}"/>

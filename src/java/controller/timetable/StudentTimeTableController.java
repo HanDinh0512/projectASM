@@ -25,19 +25,14 @@ import util.DateTimeHelper;
  *
  * @author admin
  */
-public class StudentTimeTableController extends BaseRBACController{
+public class StudentTimeTableController extends BaseRBACController {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp, Account account, ArrayList<Role> roles) throws ServletException, IOException {
-        
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account, ArrayList<Role> roles) throws ServletException, IOException {
-        String sid  = req.getParameter("id");
+        String sid = req.getParameter("id");
         StudentDBContext sdb = new StudentDBContext();
         if (sdb.checkStudentIDByAccount(account, sid)) {
-            
+
             String raw_from = req.getParameter("from");
             String raw_to = req.getParameter("to");
             java.sql.Date from = null;
@@ -74,9 +69,56 @@ public class StudentTimeTableController extends BaseRBACController{
             req.setAttribute("test", attendances.size());
 
             req.getRequestDispatcher("view/timetable/studenttimetable.jsp").forward(req, resp);
-        }else{
+        } else {
             req.getRequestDispatcher("view/studentaccessdenied.jsp").forward(req, resp);
         }
     }
-    
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account, ArrayList<Role> roles) throws ServletException, IOException {
+        String sid = req.getParameter("id");
+        StudentDBContext sdb = new StudentDBContext();
+        if (sdb.checkStudentIDByAccount(account, sid)) {
+
+            String raw_from = req.getParameter("from");
+            String raw_to = req.getParameter("to");
+            java.sql.Date from = null;
+            java.sql.Date to = null;
+
+            Date today = new Date();
+            if (raw_from == null) {
+                from = DateTimeHelper.convertUtilDateToSqlDate(DateTimeHelper.getWeekStart(today));
+            } else {
+                from = java.sql.Date.valueOf(raw_from);
+            }
+
+            if (raw_to == null) {
+                to = DateTimeHelper.convertUtilDateToSqlDate(
+                        DateTimeHelper.addDaysToDate(DateTimeHelper.getWeekStart(today), 6));
+            } else {
+                to = java.sql.Date.valueOf(raw_to);
+            }
+
+            ArrayList<java.sql.Date> dates = DateTimeHelper.getListBetween(
+                    DateTimeHelper.convertSqlDateToUtilDate(from),
+                    DateTimeHelper.convertSqlDateToUtilDate(to));
+
+            TimeSlotDBContext timeDB = new TimeSlotDBContext();
+            ArrayList<TimeSlot> slots = timeDB.list();
+            AttendanceDBContext attDB = new AttendanceDBContext();
+            ArrayList<Attendance> attendances = attDB.getAttendancesForStudent(sid, from, to);
+
+            req.setAttribute("slots", slots);
+            req.setAttribute("dates", dates);
+            req.setAttribute("from", from);
+            req.setAttribute("to", to);
+            req.setAttribute("attendances", attendances);
+            req.setAttribute("test", attendances.size());
+
+            req.getRequestDispatcher("view/timetable/studenttimetable.jsp").forward(req, resp);
+        } else {
+            req.getRequestDispatcher("view/studentaccessdenied.jsp").forward(req, resp);
+        }
+    }
+
 }

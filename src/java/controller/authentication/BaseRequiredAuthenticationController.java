@@ -18,71 +18,63 @@ import java.io.IOException;
  * @author sonnt
  */
 public abstract class BaseRequiredAuthenticationController extends HttpServlet {
-    
-    private Account getAuthenticatedAccount(HttpServletRequest req)
-    {
-      Account account = (Account) req.getSession().getAttribute("account");
-      if(account == null)
-      {
-          Cookie[] cookies = req.getCookies();
-          if(cookies!=null)
-          {
-              String username = null;
-              String password = null;
-              for (Cookie cooky : cookies) {
-                  if(cooky.getName().equals("username"))
-                      username = cooky.getValue();
-                  
-                  if(cooky.getName().equals("password"))
-                      password = cooky.getValue();
-                  
-                  if(username !=null && password!=null)
-                      break;
-              }
-              
-              if(username !=null && password!=null)
-              {
-                  AccountDBContext db = new AccountDBContext();
-                  account = db.getByUsernamePassword(username, password);
-                  account.setUsername(username);
-                  account.setPassword(password);
-                  req.getSession().setAttribute("account", account);
-              }
-          }
-      }
-      return account;
+
+    private Account getAuthenticatedAccount(HttpServletRequest req) {
+        Account account = (Account) req.getSession().getAttribute("account");
+        if (account == null) {
+            return account;
+        }
+//          Cookie[] cookies = req.getCookies();
+//          if(cookies!=null)
+//          {
+        String username = null;
+        String password = null;
+//              for (Cookie cooky : cookies) {
+//                  if(cooky.getName().equals("username"))
+//                      username = cooky.getValue();
+//                  
+//                  if(cooky.getName().equals("password"))
+//                      password = cooky.getValue();
+//                  
+//                  if(username !=null && password!=null)
+//                      break;
+//              }
+        username = account.getUsername();
+        password = account.getPassword();
+
+        if (username != null && password != null) {
+            AccountDBContext db = new AccountDBContext();
+            account = db.getByUsernamePassword(username, password);
+            req.getSession().setAttribute("account", account);
+        }
+        return account;
     }
-    
+
     protected abstract void doPost(HttpServletRequest req, HttpServletResponse resp, Account account)
-            throws ServletException, IOException; 
-    
+            throws ServletException, IOException;
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Account account = getAuthenticatedAccount(req);
-        if(account!=null)
-        {
+        if (account != null) {
             doPost(req, resp, account);
-        }
-        else
-        {
+        } else {
             resp.getWriter().println("access denied!");
         }
-    
+
     }
 
     protected abstract void doGet(HttpServletRequest req, HttpServletResponse resp, Account account)
-            throws ServletException, IOException; 
+            throws ServletException, IOException;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    Account account = getAuthenticatedAccount(req);
-        if(account!=null)
-        {
+        Account account = getAuthenticatedAccount(req);
+        if (account != null) {
             doGet(req, resp, account);
-        }
-        else
-        {
+        } else {
             resp.getWriter().println("access denied!");
         }
     }
-    
+
 }

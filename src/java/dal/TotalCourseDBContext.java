@@ -49,4 +49,6 @@ public class TotalCourseDBContext extends DBContext<TotalCourse> {
             Logger.getLogger(TotalCourseDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    
 }

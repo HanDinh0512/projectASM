@@ -45,7 +45,7 @@
         </style>
     </head>
     <body>
-        <input type="button" value="Logout" class="button logout" onclick="window.location.href = 'login'"/>
+        <input type="button" value="Logout" class="button logout" onclick="window.location.href = 'logout'"/>
         <div class="container">
             <h1>Welcome to FAP FPT University</h1>
             <p>This is a beautiful lecturer home page.</p>

@@ -98,7 +98,8 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                     + "                    inner join timeslot t on t.tid = ses.tid\n"
                     + "                    inner join lecturer l on l.lid = ses.lid\n"
                     + "					left join attendance att on en.sid = att.sid and ses.sesid = att.sesid\n"
-                    + "                    where en.sid = ? and g.subid = ? and g.term = ?";
+                    + "                    where en.sid = ? and g.subid = ? and g.term = ?"
+                    + "order by ses.sesid";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, sid);
             stm.setString(2, subid);
