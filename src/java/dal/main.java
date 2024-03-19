@@ -10,6 +10,7 @@ import entity.Subject;
 import entity.Term;
 import java.util.ArrayList;
 import java.util.Date;
+import java.sql.*;
 
 /**
  *
@@ -21,8 +22,7 @@ public class main {
         return !currentDate.before(startDate) && !currentDate.after(endDate);
     }
     public static void main(String[] args) {
-        RoleDBContext rdb = new RoleDBContext();
-            Role role = rdb.getRole("handg", "abc");
-            System.out.println(role.getName());
+       ChangeDBContext cdb = new ChangeDBContext();
+        System.out.println(cdb.getRequestChangeTimetablesTo("l2").size());
     }
 }

@@ -19,6 +19,17 @@ public class Session extends IEntity{
     private Date date;
     private boolean isTaken;
     private String term ;
+    private boolean change ;
+
+    public boolean isChange() {
+        return change;
+    }
+
+    public void setChange(boolean change) {
+        this.change = change;
+    }
+    
+    
 
     public String getTerm() {
         return term;

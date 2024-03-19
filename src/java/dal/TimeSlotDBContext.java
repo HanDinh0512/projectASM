@@ -19,13 +19,14 @@ public class TimeSlotDBContext extends DBContext<TimeSlot>{
         ArrayList<TimeSlot> slots = new ArrayList<>();
         try {
 
-            String sql = "SELECT tid FROM TimeSlot";
+            String sql = "SELECT tid, timeStart, timeEnd FROM TimeSlot";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 TimeSlot t = new TimeSlot();
                 t.setTid(rs.getInt("tid"));
-                
+                t.setTimeStart(rs.getString("timeStart"));
+                t.setTimeEnd(rs.getString("timeEnd"));
                 slots.add(t);
             }
         } catch (SQLException ex) {

@@ -40,6 +40,18 @@
         <servlet-name>LogoutController</servlet-name>
         <servlet-class>controller.authentication.LogoutController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChangeScheduleController</servlet-name>
+        <servlet-class>controller.changetimetable.ChangeScheduleController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewRequestController</servlet-name>
+        <servlet-class>controller.changetimetable.ViewRequestController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RequestReceivedController</servlet-name>
+        <servlet-class>controller.changetimetable.RequestReceivedController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -95,5 +107,17 @@
     <servlet-mapping>
         <servlet-name>LogoutController</servlet-name>
         <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeScheduleController</servlet-name>
+        <url-pattern>/changeschedule</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewRequestController</servlet-name>
+        <url-pattern>/viewrequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RequestReceivedController</servlet-name>
+        <url-pattern>/requestreceived</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -7,6 +7,7 @@ package dal;
 import entity.Account;
 import entity.Student;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,15 +35,15 @@ public class StudentDBContext extends DBContext<Student> {
     }
 
     public boolean checkStudentIDByAccount(Account account, String sid) {
-        
+
         try {
             String sql = "select sid\n"
                     + "from student\n"
                     + "where username = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1 ,account.getUsername());
+            stm.setString(1, account.getUsername());
             ResultSet rs = stm.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
                 String realSID = rs.getString("sid");
                 return realSID.equals(sid);
             }
@@ -50,5 +51,26 @@ public class StudentDBContext extends DBContext<Student> {
             Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return true;
+    }
+
+    public ArrayList<Student> getStudentInGID(int gid) {
+        ArrayList<Student> students = new ArrayList<>();
+        try {
+            String sql = "select stu.sid,name,email from student stu inner join Enrollment en on en.sid = stu.sid\n"
+                    + "where en.gid = ?";
+            PreparedStatement stm =connection.prepareStatement(sql);
+            stm.setInt(1, gid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {                
+                Student s = new Student();
+                s.setSid(rs.getString("sid"));
+                s.setName(rs.getString("name"));
+                s.setEmail(rs.getString("email"));
+                students.add(s);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return students;
     }
 }

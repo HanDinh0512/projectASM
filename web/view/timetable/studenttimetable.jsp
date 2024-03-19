@@ -83,12 +83,12 @@
         </tr>
         <c:forEach items="${requestScope.slots}" var="slot">
             <tr>
-                <td>${slot.tid}</td>
+                <td>Slot ${slot.tid}<br>(${slot.timeStart} - ${slot.timeEnd})</td>
                 <c:forEach items="${requestScope.dates}" var="d">
                     <td>
                         <c:forEach items="${requestScope.attendances}" var="att">
                             <c:if test="${att.ses.date eq d and att.ses.slot.tid eq slot.tid}">
-                                ${att.ses.group.gname} - ${att.ses.group.subject.subname} <br/>
+                                ${att.ses.group.gname} - ${att.ses.group.subject.subname} -${att.ses.room.rnumber}<br/>
                                 <c:if test="${att.ses.isTaken}">
                                     <c:if test="${att.isPresent}">Present</c:if>
                                     <c:if test="${!att.isPresent}">Absent</c:if>

@@ -18,29 +18,40 @@
                 padding: 0;
             }
             .container {
-                width: 80%;
-                margin: 0 auto;
+                max-width: 800px;
+                margin: 20px auto;
                 padding: 20px;
-                background-color: #fff;
+                background-color: #f0f8ff; /* Màu xanh lá nhạt */
                 border-radius: 5px;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                text-align: center;
+            }
+            h1 {
+                margin-bottom: 20px;
+            }
+            .button-container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
             }
             .button {
                 display: inline-block;
                 padding: 10px 20px;
-                background-color: #007bff;
-                color: #fff;
+                margin: 10px;
+                background-color: #4CAF50; /* Màu xanh lá */
+                color: white;
+                text-align: center;
                 text-decoration: none;
+                border: none;
                 border-radius: 5px;
-                transition: background-color 0.3s ease;
+                cursor: pointer;
+                transition: background-color 0.3s;
             }
             .button:hover {
-                background-color: #0056b3;
+                background-color: #45a049; /* Màu xanh lá nhạt khi di chuột */
             }
             .logout {
-                position: absolute;
-                top: 20px;
-                right: 20px;
+                float: right;
             }
         </style>
     </head>
@@ -48,10 +59,12 @@
         <input type="button" value="Logout" class="button logout" onclick="window.location.href = 'logout'"/>
         <div class="container">
             <h1>Welcome to FAP FPT University</h1>
-            <p>This is a beautiful student home page.</p>
-            <a href="<%=request.getContextPath()%>/studenttimetable?id=${requestScope.studentid}" class="button">View Timetable</a><br/><br/>
-            <a href="<%=request.getContextPath()%>/studentgrade?id=${requestScope.studentid}" class="button">Mark Report</a><br/><br/>
-            <a href="<%=request.getContextPath()%>/viewattend?id=${requestScope.studentid}" class="button">Attendance Report</a><br/><br/>
+            <div  class="button-container">
+                
+                <a href="<%=request.getContextPath()%>/studenttimetable?id=${requestScope.studentid}" class="button">View Timetable</a><br/><br/>
+                <a href="<%=request.getContextPath()%>/studentgrade?id=${requestScope.studentid}" class="button">Mark Report</a><br/><br/>
+                <a href="<%=request.getContextPath()%>/viewattend?id=${requestScope.studentid}" class="button">Attendance Report</a><br/><br/>
+            </div>
         </div>
     </body>
 

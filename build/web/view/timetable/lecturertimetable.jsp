@@ -8,11 +8,45 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Lecturer Timetable</title>
         <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 20px;
+            }
+            form {
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+            form input[type="date"], form input[type="submit"] {
+                margin-right: 10px;
+                padding: 8px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+            table, th, td {
+                border: 1px solid #ddd;
+            }
+            th, td {
+                padding: 10px;
+                text-align: left;
+            }
+            td form {
+                margin: 0;
+            }
+            td form input[type="submit"] {
+                padding: 5px 10px;
+            }
             .button1 {
                 position: fixed;
                 top: 20px;
@@ -39,26 +73,6 @@
                 box-shadow: 0 3px #004286;
                 transform: translateY(2px);
             }
-            body {
-                font-family: Arial, sans-serif;
-                margin: 20px;
-            }
-            form {
-                margin-bottom: 20px;
-            }
-            table {
-                border-collapse: collapse;
-                width: 100%;
-            }
-            th, td {
-                border: 1px solid #ddd;
-                padding: 8px;
-                text-align: left;
-            }
-            th {
-                background-color: #f2f2f2; /* Màu nền xám nhạt cho tiêu đề cột */
-                color: #333; /* Màu chữ cho tiêu đề cột */
-            }
         </style>
     </head>
     <body>
@@ -67,49 +81,46 @@
         </form>
         <form action="lecturertimetable" method="POST">
             <input type="hidden" value="${param.id}" name="id"/>
-            From: <input type="date" name="from" value="${requestScope.from}"/> -
-            <input type="date" name="to" value="${requestScope.to}"/>
+            <label for="from">From:</label>
+            <input type="date" id="from" name="from" value="${requestScope.from}"/>
+            -
+            <label for="to">To:</label>
+            <input type="date" id="to" name="to" value="${requestScope.to}"/>
             <input type="submit" value="View"/>
         </form>
-        <table border="1px">
+
+        <table>
             <tr>
                 <td></td>
                 <c:forEach items="${requestScope.dates}" var="d">
                     <td>
                         (<fmt:formatDate pattern="E" value="${d}" />)
-                        ${d}</td>
-                    </c:forEach>
+                        ${d}
+                    </td>
+                </c:forEach>
             </tr>
             <c:forEach items="${requestScope.slots}" var="slot">
                 <tr>
-                    <td>${slot.tid}</td>
+                    <td>Slot ${slot.tid}<br>(${slot.timeStart} - ${slot.timeEnd})</td>
                     <c:forEach items="${requestScope.dates}" var="d">
                         <td>
                             <c:forEach items="${requestScope.sessions}" var="ses">
                                 <c:if test="${ses.date eq d and ses.slot.tid eq slot.tid}">
                                     ${ses.group.gname} - ${ses.group.subject.subname} - ${ses.room.rnumber}<br/>
-                                    <c:if test="${ses.isTaken}">
-                                        <form action="attendance" method="GET">
-                                            <input type="hidden" value="${ses.sesid}" name="id"/>
-                                            <input type="hidden" value="${ses.group.subject.subname}" name ="sub"/>
-                                            <input type="hidden" value="${ses.date}" name ="date"/>
-                                            <input type="hidden" value="${ses.slot.tid}" name ="slot"/>
-                                            <input type="submit" value="Edit">
-                                        </form>
-                                        <%--<a href ="attendance?id=${ses.sesid}">Edit</a>
-                                    <input type="hidden" value="${ses.group.subject.subname}" name ="sub"/>
-                                    <input type="hidden" value="${ses.date}" name ="date"/>
-<input type="hidden" value="${ses.slot.tid}" name ="slot"/>--%>
-                                    </c:if>
-                                    <c:if test="${!ses.isTaken}">
-                                        <form action="attendance" method="GET">
-                                            <input type="hidden" value="${ses.sesid}" name="id"/>
-                                            <input type="hidden" value="${ses.group.subject.subname}" name ="sub"/>
-                                            <input type="hidden" value="${ses.date}" name ="date"/>
-                                            <input type="hidden" value="${ses.slot.tid}" name ="slot"/>
-                                            <input type="submit" value="Take">
-                                        </form>
-                                    </c:if>
+                                    <form action="attendance" method="GET">
+                                        <input type="hidden" value="${ses.sesid}" name="id"/>
+                                        <input type="hidden" value="${ses.group.subject.subname}" name ="sub"/>
+                                        <input type="hidden" value="${ses.date}" name ="date"/>
+                                        <input type="hidden" value="${ses.slot.tid}" name ="slot"/>
+                                        <c:choose>
+                                            <c:when test="${ses.isTaken}">
+                                                <input type="submit" value="Edit">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="submit" value="Take">
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </form>
                                 </c:if>
                             </c:forEach>
                         </td>
@@ -119,3 +130,4 @@
         </table>
     </body>
 </html>
+

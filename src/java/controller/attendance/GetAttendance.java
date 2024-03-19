@@ -86,7 +86,9 @@ public class GetAttendance extends BaseRBACController {
                             String content = "You have been absent from the course " + s + " in the slot " + slot + " of the day " + date;
                             int countAbsent = attDB.countAbsent(attendance.getStudent().getSid(), attendance.getSes().getGroup());
                             int totalSes = sesDB.countSession(attendance.getSes().getGroup());
-                            if ((float)countAbsent / totalSes <= 0.2) {
+                            float absentPer = (float)countAbsent / totalSes;
+                            //req.setAttribute("test", absentPer);
+                            if (absentPer < 0.2||absentPer==0.2) {
                                 content += "\nYou have missed " + countAbsent + " slots out of a total of " + totalSes + " class sessions for the subject " + s + ", you should pay more attention to attending class.\n"
                                         + "If you miss more than 20% of the classes, you will not pass this subject!";
                             } else {
