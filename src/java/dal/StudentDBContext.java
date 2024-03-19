@@ -5,6 +5,7 @@
 package dal;
 
 import entity.Account;
+import entity.Department;
 import entity.Student;
 import java.sql.*;
 import java.util.ArrayList;
@@ -58,10 +59,10 @@ public class StudentDBContext extends DBContext<Student> {
         try {
             String sql = "select stu.sid,name,email from student stu inner join Enrollment en on en.sid = stu.sid\n"
                     + "where en.gid = ?";
-            PreparedStatement stm =connection.prepareStatement(sql);
+            PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, gid);
             ResultSet rs = stm.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
                 Student s = new Student();
                 s.setSid(rs.getString("sid"));
                 s.setName(rs.getString("name"));
@@ -72,5 +73,30 @@ public class StudentDBContext extends DBContext<Student> {
             Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return students;
+    }
+
+    public Student getStudentInfo(String sid) {
+        Student s = new Student();
+        try {
+            String sql = "  select stu.sid,stu.dob,stu.did,stu.email,stu.gender,stu.name,dep.dname \n"
+                    + "  from Student stu inner join department dep on dep.did = stu.did where stu.sid = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, sid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {                
+                Department dep = new Department();
+                dep.setDid(rs.getInt("did"));
+                dep.setDname(rs.getString("dname"));
+                s.setSid(sid);
+                s.setName(rs.getString("name"));
+                s.setEmail(rs.getString("email"));
+                s.setDob(rs.getDate("dob"));
+                s.setGender(rs.getBoolean("gender"));
+                s.setDep(dep);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return s;
     }
 }

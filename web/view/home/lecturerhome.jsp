@@ -3,8 +3,7 @@
     Created on : Feb 28, 2024, 3:57:38 PM
     Author     : admin
 --%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,6 +66,7 @@
             <a href="<%=request.getContextPath()%>/changeschedule?id=${requestScope.lecturerid}" class="button">Change teaching schedule</a>
             <a href="<%=request.getContextPath()%>/viewrequest?id=${requestScope.lecturerid}" class="button">View Request</a>
             <a href="<%=request.getContextPath()%>/requestreceived?id=${requestScope.lecturerid}" class="button">Request Received</a>
+            <a href="<%=request.getContextPath()%>/lecturerinfo?id=${requestScope.lecturerid}" class="button">Lecturer Information</a>
         </div>
     </div>
 </body>

@@ -72,15 +72,41 @@ public class LecturerDBContext extends DBContext<Lecturer> {
         try {
             String sql = "select distinct l.email from lecturer l inner join RequestChangeTimetable re on re.lidto = l.lid\n"
                     + "where l.lid = ?";
-            PreparedStatement stm =connection.prepareStatement(sql);
+            PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, lto);
             ResultSet rs = stm.executeQuery();
-            while (rs.next()) {                
-                email+=rs.getString("email");
+            while (rs.next()) {
+                email += rs.getString("email");
             }
         } catch (SQLException ex) {
             Logger.getLogger(LecturerDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return email;
+    }
+
+    public Lecturer getLecturerInfor(String lid) {
+        Lecturer l = new Lecturer();
+        try {
+            String sql = "SELECT  lid\n"
+                    + "      ,lname\n"
+                    + "      ,gender\n"
+                    + "      ,username\n"
+                    + "      ,email,truename,dob\n"
+                    + "  FROM lecturer where lid = ?";
+            PreparedStatement stm =connection.prepareStatement(sql);
+            stm.setString(1, lid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {                
+                l.setLid(lid);
+                l.setLname(rs.getString("lname"));
+                l.setTruename(rs.getString("truename"));
+                l.setGender(rs.getBoolean("gender"));
+                l.setEmail(rs.getString("email"));
+                l.setDob(rs.getDate("dob"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LecturerDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return  l;
     }
 }

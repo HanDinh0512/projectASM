@@ -64,6 +64,7 @@
                 <a href="<%=request.getContextPath()%>/studenttimetable?id=${requestScope.studentid}" class="button">View Timetable</a><br/><br/>
                 <a href="<%=request.getContextPath()%>/studentgrade?id=${requestScope.studentid}" class="button">Mark Report</a><br/><br/>
                 <a href="<%=request.getContextPath()%>/viewattend?id=${requestScope.studentid}" class="button">Attendance Report</a><br/><br/>
+                <a href="<%=request.getContextPath()%>/studentinfo?id=${requestScope.studentid}" class="button">Student Information</a><br/><br/>
             </div>
         </div>
     </body>

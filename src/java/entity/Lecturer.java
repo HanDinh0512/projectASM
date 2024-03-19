@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package entity;
-
+import java.sql.*;
 /**
  *
  * @author admin
@@ -13,6 +13,36 @@ public class Lecturer extends IEntity{
     private String lname ;
     private String username ;
     private String email ;
+    private String truename ;
+    private boolean gender ;
+    private Date dob ;
+
+    public String getTruename() {
+        return truename;
+    }
+
+    public void setTruename(String truename) {
+        this.truename = truename;
+    }
+
+    public boolean isGender() {
+        return gender;
+    }
+
+    public void setGender(boolean gender) {
+        this.gender = gender;
+    }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+    
+    
+    
 
     public String getEmail() {
         return email;
