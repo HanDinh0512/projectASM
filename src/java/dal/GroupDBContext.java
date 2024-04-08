@@ -70,4 +70,31 @@ public class GroupDBContext extends DBContext<Group> {
         }
         return g;
     }
+    
+    public ArrayList<Group> getGroupBySidGid( String sid,String term){
+        ArrayList<Group> groups = new ArrayList<>();
+        try {
+            String sql = "select g.gid, g.gname, g.subid, g.term, g.PIC from [group] g inner join Enrollment e on e.gid = g.gid where   e.sid = ? and g.term = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, sid);
+            stm.setString(2, term);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {             
+                Group g = new Group();
+                Subject sub = new Subject();
+                sub.setSubname(rs.getString("subid"));
+                g.setTerm(rs.getString("term"));
+                g.setGid(rs.getInt("gid"));
+                g.setGname(rs.getString("gname"));
+                Lecturer l = new Lecturer();
+                l.setLname(rs.getString("PIC"));
+                g.setPIC(l);
+                g.setSubject(sub);
+                groups.add(g);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(GroupDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return groups;
+    }
 }

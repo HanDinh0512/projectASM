@@ -15,14 +15,14 @@ import java.util.logging.Logger;
  */
 public class TotalCourseDBContext extends DBContext<TotalCourse> {
 
-    public TotalCourse getTotalCourse(String sid, String subid, String term) {
+    public TotalCourse getTotalCourse(String sid, int gid, String term) {
         TotalCourse t = new TotalCourse();
         try {
             String sql = "select t.total, t.status from [totalcourse] t\n"
-                    + "where sid=? and subid=? and term = ?";
+                    + "where sid=? and gid=? and term = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, sid);
-            stm.setString(2, subid);
+            stm.setInt(2, gid);
             stm.setString(3, term);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {

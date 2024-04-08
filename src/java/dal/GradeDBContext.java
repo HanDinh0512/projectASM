@@ -22,20 +22,21 @@ import util.DateTimeHelper;
  */
 public class GradeDBContext extends DBContext<Grade> {
 
-    public ArrayList<Grade> getGradesBySidAndTermAndSub(String sid, String term, String subid) {
+    public ArrayList<Grade> getGradesBySidAndTermAndSub(String sid, String term, int gid) {
         ArrayList<Grade> grades = new ArrayList<>();
         try {
             String sql = "select stu.sid, stu.name as sname,ass.assid, g.term, ass.subid, ass.name, ass.weight,gr.isTaken, gr.score, gr.description\n"
                     + "from Assessment ass inner join [group] g on g.subid =ass.subid\n"
                     + "					inner join Enrollment en on en.gid = g.gid\n"
                     + "					inner join student stu on stu.sid = en.sid\n"
-                    + "					left join grade gr on ass.assid = gr.assid and gr.sid = stu.sid\n"
-                    + "where en.sid = ? and g.term = ? and ass.subid = ?\n"
+                    + "					left join grade gr on ass.assid = gr.assid and gr.sid = stu.sid and gr.gid = g.gid\n"
+                    + "where en.sid = ? and g.term = ?  and g.gid = ?\n"
                     + "order by ass.assid";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, sid);
             stm.setString(2, term);
-            stm.setString(3, subid);
+       
+            stm.setInt(3, gid);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Assessment ass = new Assessment();
@@ -75,7 +76,7 @@ public class GradeDBContext extends DBContext<Grade> {
                     + "                    from Assessment ass inner join [group] g on g.subid =ass.subid\n"
                     + "                    					inner join Enrollment en on en.gid = g.gid\n"
                     + "                    					inner join student stu on stu.sid = en.sid\n"
-                    + "                    					left join grade gr on ass.assid = gr.assid and gr.sid = stu.sid\n"
+                    + "                    					left join grade gr on ass.assid = gr.assid and gr.sid = stu.sid and gr.gid = g.gid\n"
                     + "                    where g.gid = ? and ass.assid = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, gid);

@@ -8,12 +8,14 @@ package controller.grade;
 import controller.authentication.BaseRequiredAuthenticationController;
 import controller.authentication.authorization.BaseRBACController;
 import dal.GradeDBContext;
+import dal.GroupDBContext;
 import dal.StudentDBContext;
 import dal.SubjectDBContext;
 import dal.TermDBContext;
 import dal.TotalCourseDBContext;
 import entity.Account;
 import entity.Grade;
+import entity.Group;
 import entity.Role;
 import entity.Subject;
 import entity.Term;
@@ -40,6 +42,7 @@ public class StudentGradeController extends BaseRBACController {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account, ArrayList<Role> roles) throws ServletException, IOException {
         String sid = req.getParameter("id");
+        String gid = req.getParameter("gid");
         StudentDBContext stdb = new StudentDBContext();
         if (stdb.checkStudentIDByAccount(account, sid)) {
         String termid = req.getParameter("term");
@@ -49,15 +52,18 @@ public class StudentGradeController extends BaseRBACController {
         ArrayList<Subject> subjects = new ArrayList<>();
         SubjectDBContext sdb = new SubjectDBContext();
         GradeDBContext gdb = new GradeDBContext();
+            GroupDBContext grDB = new GroupDBContext();
         TotalCourseDBContext todb = new TotalCourseDBContext();
         if (termid!=null) {
             subjects = sdb.getSubjects(sid, termid);
             req.setAttribute("termid", termid);
+            ArrayList<Group> groups = grDB.getGroupBySidGid( sid,termid);
+            req.setAttribute("groups", groups);
         }
         
-        if(subid!=null){
-            ArrayList<Grade> grades = gdb.getGradesBySidAndTermAndSub(sid, termid, subid);
-            TotalCourse totalCourse = todb.getTotalCourse(sid, subid, termid);
+        if(gid!=null){
+            ArrayList<Grade> grades = gdb.getGradesBySidAndTermAndSub(sid, termid,Integer.parseInt(gid));
+            TotalCourse totalCourse = todb.getTotalCourse(sid, Integer.parseInt(gid), termid);
             req.setAttribute("totalcourse", totalCourse);
             req.setAttribute("grades", grades);
             req.setAttribute("subid", subid);
@@ -65,7 +71,8 @@ public class StudentGradeController extends BaseRBACController {
         
         req.setAttribute("sid", sid);
         req.setAttribute("term", term);
-        req.setAttribute("subjects", subjects);
+        req.setAttribute("gid", gid);
+//        req.setAttribute("subjects", subjects);
         req.getRequestDispatcher("view/mark/studentmark.jsp").forward(req, resp);
             
         }else{

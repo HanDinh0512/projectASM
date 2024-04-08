@@ -102,9 +102,9 @@
                         <tr>
                             <th>Subject</th>
                         </tr>
-                        <c:forEach items="${requestScope.subjects}" var="s">
+                        <c:forEach items="${requestScope.groups}" var="s">
                             <tr>
-                                <td><a href="studentgrade?id=${requestScope.sid}&term=${requestScope.termid}&subid=${s.subname}">${s.subname}</a></td>
+                                <td><a href="studentgrade?id=${requestScope.sid}&term=${requestScope.termid}&gid=${s.gid}">${s.subject.subname} - ${s.gname}</a></td>
                             </tr>
                         </c:forEach>
                     </table>
@@ -113,7 +113,7 @@
         </div>
 
         <%-- Bảng Grade (nếu đã chọn Term và Subject) --%>
-        <c:if test="${not empty requestScope.subid}">
+        <c:if test="${not empty requestScope.gid}">
             <div class="table-container">
                 <h2>Grade Information</h2>
                 <table>
