@@ -18,6 +18,7 @@ import entity.Grade;
 import entity.GradeItemTaken;
 import entity.Group;
 import entity.Role;
+import entity.Student;
 import entity.Term;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -34,54 +35,43 @@ import java.util.ArrayList;
 public class LecturerTakeGradeController extends BaseRBACController {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp, Account account,ArrayList<Role> roles) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp, Account account, ArrayList<Role> roles) throws ServletException, IOException {
         String lid = req.getParameter("id");
         LecturerDBContext ldb = new LecturerDBContext();
         if (ldb.checkLecturerIDByAccount(account, lid)) {
             String gid = req.getParameter("gid");
-            String assid = req.getParameter("assid");
-            GroupDBContext gdb = new GroupDBContext();
             GradeDBContext grDB = new GradeDBContext();
-            GradeItemTakenDBContext takenDB = new GradeItemTakenDBContext();
-            ArrayList<Grade> grades = grDB.getGradesForLecturer(lid, Integer.parseInt(gid), Integer.parseInt(assid));
-            for (Grade grade : grades) {
-                String sid = grade.getStudent().getSid();
-                String raw_score = req.getParameter("grade" + sid + "&" + gid + "&" + assid);
-                String des = req.getParameter("des" + sid + "&" + gid + "&" + assid);
-                if (!grDB.checkIstakenGrade(sid, Integer.parseInt(gid), Integer.parseInt(assid))) {
-                    if (raw_score.isBlank()) {
-                    } else {
-                        grDB.insertNewGrade(sid, Integer.parseInt(gid), Integer.parseInt(assid), raw_score, des);
+            GroupDBContext gdb = new GroupDBContext();
+            Group group = gdb.getGroupByGid(Integer.parseInt(gid));
+            AssessmentDBContext assDB = new AssessmentDBContext();
+            ArrayList<Assessment> asses = assDB.getAssessmentsBySub(group.getSubject().getSubname());
+            ArrayList<Student> students = gdb.getStudents(Integer.parseInt(gid));
+            for (Assessment ass : asses) {
+                for (Student student : students) {
+                    String raw_score = req.getParameter("grade" + student.getSid() + "&" + gid + "&" + ass.getAssid());
+                    if (!grDB.checkIstakenGrade(student.getSid(), Integer.parseInt(gid), ass.getAssid())) {
+                        if (raw_score.isBlank()||raw_score.isEmpty()) {
+                            
+                        }else{
+                            grDB.insertNewGrade(student.getSid(), Integer.parseInt(gid), ass.getAssid(), raw_score);
+                        }
+                    } else{
+                        grDB.updateNewGrade(student.getSid(), Integer.parseInt(gid), ass.getAssid(), raw_score);
                     }
-                } else {
-                    grDB.updateNewGrade(sid, Integer.parseInt(gid), Integer.parseInt(assid), raw_score, des);
                 }
             }
-            Group g = gdb.getGroupByGid(Integer.parseInt(gid));
-            ArrayList<GradeItemTaken> takens = takenDB.getGradeItemTakens(g);
-            Boolean check = false;
-            for (GradeItemTaken taken : takens) {
-                if (taken.getAssessment().getAssid() == Integer.parseInt(assid) && taken.isIsTaken()) {
-                    check = true;
-                }
-            }
-            if (!check) {
-                takenDB.insertNewGradeItemTaken(Integer.parseInt(gid), Integer.parseInt(assid));
-            }
-
             resp.sendRedirect("takegrade?id=" + lid + "&gid=" + gid);
-        }else{
+        } else {
             req.getRequestDispatcher("view/lectureraccessdenied.jsp").forward(req, resp);
         }
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account,ArrayList<Role> roles) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account, ArrayList<Role> roles) throws ServletException, IOException {
         String lid = req.getParameter("id");
         LecturerDBContext ldb = new LecturerDBContext();
         if (ldb.checkLecturerIDByAccount(account, lid)) {
             String gid = req.getParameter("gid");
-            String assid = req.getParameter("assid");
             GradeItemTakenDBContext takenDB = new GradeItemTakenDBContext();
             GroupDBContext gdb = new GroupDBContext();
             TermDBContext tdb = new TermDBContext();
@@ -93,17 +83,16 @@ public class LecturerTakeGradeController extends BaseRBACController {
                 Group g = gdb.getGroupByGid(Integer.parseInt(gid));
                 ArrayList<GradeItemTaken> takens = takenDB.getGradeItemTakens(g);
                 req.setAttribute("takens", takens);
-            }
-            if (assid != null) {
-                ArrayList<Grade> grades = grDB.getGradesForLecturer(lid, Integer.parseInt(gid), Integer.parseInt(assid));
-                req.setAttribute("assid", assid);
+                ArrayList<Grade> grades = grDB.getGradesForLecturer(lid, Integer.parseInt(gid));
                 req.setAttribute("grades", grades);
+                ArrayList<Student> students = gdb.getStudents(Integer.parseInt(gid));
+                req.setAttribute("students", students);
             }
             req.setAttribute("gid", gid);
             req.setAttribute("lid", lid);
             req.setAttribute("groups", groups);
             req.getRequestDispatcher("view/mark/takemark.jsp").forward(req, resp);
-        }else{
+        } else {
             req.getRequestDispatcher("view/lectureraccessdenied.jsp").forward(req, resp);
         }
     }

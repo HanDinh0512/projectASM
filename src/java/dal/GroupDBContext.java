@@ -6,6 +6,7 @@ package dal;
 
 import entity.Group;
 import entity.Lecturer;
+import entity.Student;
 import entity.Subject;
 import entity.Term;
 import java.sql.*;
@@ -96,5 +97,26 @@ public class GroupDBContext extends DBContext<Group> {
             Logger.getLogger(GroupDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return groups;
+    }
+    
+    public ArrayList<Student> getStudents(int gid){
+        ArrayList<Student> students = new ArrayList<>();
+        try {
+            String sql = "select stu.sid, stu.name from Enrollment en inner join [group] g on g.gid = en.gid \n" +
+                    "				inner join student stu on stu.sid = en.sid\n" +
+                    "				where g.gid = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, gid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {                
+                Student s = new Student();
+                s.setSid(rs.getString("sid"));
+                s.setName(rs.getString("name"));
+                students.add(s);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(GroupDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return students;
     }
 }

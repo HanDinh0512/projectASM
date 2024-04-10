@@ -83,8 +83,9 @@
         </style>
     </head>
     <body>
-        <form action="lecturerhome">
-            <button class="button1">Home</button>
+        <form action="lecturertimetable">
+            <input type="hidden" value="${requestScope.lid}" name="id"/>
+            <button class="button1">Timetable</button>
         </form>
         <h2>TAKE ATTENDANCE</h2><br/>
 

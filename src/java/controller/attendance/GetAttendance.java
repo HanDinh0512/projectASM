@@ -52,6 +52,7 @@ public class GetAttendance extends BaseRBACController {
         int sesid = Integer.parseInt(req.getParameter("id"));
         SessionDBContext sesDB = new SessionDBContext();
         LecturerDBContext ldb = new LecturerDBContext();
+        String lid = ldb.getLecturerID(account);
         if (ldb.checkLecturerIDByAccount(account, sesDB.getLecturerID(sesid))) {
             String date = req.getParameter("date");
             String slot = req.getParameter("slot");
@@ -134,6 +135,7 @@ public class GetAttendance extends BaseRBACController {
             req.setAttribute("slot", slot);
             req.setAttribute("sub", subject);
             req.setAttribute("atts", attendances);
+            req.setAttribute("lid", lid);
             req.getRequestDispatcher("view/attendance/takeattendance.jsp").forward(req, resp);    
         }else{
             req.getRequestDispatcher("view/lectureraccessdenied.jsp").forward(req, resp);
@@ -142,9 +144,11 @@ public class GetAttendance extends BaseRBACController {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, Account account, ArrayList<Role> roles) throws ServletException, IOException {
+        
         int sesid = Integer.parseInt(req.getParameter("id"));
         SessionDBContext sesDB = new SessionDBContext();
         LecturerDBContext ldb = new LecturerDBContext();
+        String lid = ldb.getLecturerID(account);
         if (ldb.checkLecturerIDByAccount(account, sesDB.getLecturerID(sesid))) {
             String date = req.getParameter("date");
             String slot = req.getParameter("slot");
@@ -157,6 +161,7 @@ public class GetAttendance extends BaseRBACController {
             req.setAttribute("sub", subject);
             req.setAttribute("atts", attendances);
             req.setAttribute("test", attendances.size());
+            req.setAttribute("lid", lid);
             req.getRequestDispatcher("view/attendance/takeattendance.jsp").forward(req, resp);
             
         }else{

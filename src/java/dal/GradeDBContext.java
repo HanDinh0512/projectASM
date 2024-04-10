@@ -69,7 +69,7 @@ public class GradeDBContext extends DBContext<Grade> {
         return grades;
     }
 
-    public ArrayList<Grade> getGradesForLecturer(String lid, int gid, int assid) {
+    public ArrayList<Grade> getGradesForLecturer(String lid, int gid) {
         ArrayList<Grade> grades = new ArrayList<>();
         try {
             String sql = "select stu.sid, stu.name as sname, g.term,g.gid,ass.assid, ass.subid, ass.name, ass.weight, gr.score, gr.description\n"
@@ -77,10 +77,10 @@ public class GradeDBContext extends DBContext<Grade> {
                     + "                    					inner join Enrollment en on en.gid = g.gid\n"
                     + "                    					inner join student stu on stu.sid = en.sid\n"
                     + "                    					left join grade gr on ass.assid = gr.assid and gr.sid = stu.sid and gr.gid = g.gid\n"
-                    + "                    where g.gid = ? and ass.assid = ?";
+                    + "                    where g.gid = ? ";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, gid);
-            stm.setInt(2, assid);
+            
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Assessment ass = new Assessment();
@@ -94,7 +94,7 @@ public class GradeDBContext extends DBContext<Grade> {
                 sub.setSubname(rs.getString("subid"));
                 stu.setSid(rs.getString("sid"));
                 stu.setName(rs.getString("sname"));
-                ass.setAssid(assid);
+                ass.setAssid(rs.getInt("assid"));
                 ass.setName(rs.getString("name"));
                 ass.setSubject(sub);
                 ass.setWeight(rs.getFloat("weight"));
@@ -132,7 +132,7 @@ public class GradeDBContext extends DBContext<Grade> {
         return isTaken;
     }
 
-    public void insertNewGrade(String sid, int gid, int assid, String score, String des) {
+    public void insertNewGrade(String sid, int gid, int assid, String score) {
         try {
             String sql = "INSERT INTO [dbo].[grade]\n"
                     + "           ([assid]\n"
@@ -140,14 +140,14 @@ public class GradeDBContext extends DBContext<Grade> {
                     + "           ,[score]\n"
                     + "           ,[gid]\n"
                     + "           ,[isTaken]\n"
-                    + "           ,[description])\n"
+                    + "           )\n"
                     + "     VALUES\n"
                     + "           (?\n"
                     + "           ,?\n"
                     + "           ,?\n"
                     + "           ,?\n"
                     + "           ,?\n"
-                    + "           ,?)";
+                    + "           )";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, assid);
             stm.setString(2, sid);
@@ -158,31 +158,31 @@ public class GradeDBContext extends DBContext<Grade> {
             }else{
                 stm.setBoolean(5, true);
             }
-            stm.setString(6, des);
+            
             stm.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(GradeDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void updateNewGrade(String sid, int gid, int assid, String score, String des) {
+    public void updateNewGrade(String sid, int gid, int assid, String score) {
         try {
             String sql = "UPDATE [dbo].[grade]\n"
                     + "   SET \n"
                     + "      [score] = ?,\n"
-                    + "      [description] = ?, isTaken = ?\n"
+                    + "       isTaken = ?\n"
                     + " WHERE sid = ? and gid = ? and assid = ? ";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, score);
-            stm.setString(2, des);
+            
             if (score!=null) {
-                stm.setBoolean(3, true);
+                stm.setBoolean(2, true);
             }else{
-                stm.setBoolean(3, false);
+                stm.setBoolean(2, false);
             }
-            stm.setString(4, sid);
-            stm.setInt(5, gid);
-            stm.setInt(6, assid);
+            stm.setString(3,sid);
+            stm.setInt(4, gid);
+            stm.setInt(5, assid);
             stm.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(GradeDBContext.class.getName()).log(Level.SEVERE, null, ex);
