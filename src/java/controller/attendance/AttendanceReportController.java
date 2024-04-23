@@ -6,6 +6,7 @@ package controller.attendance;
 
 import controller.authentication.authorization.BaseRBACController;
 import dal.AttendanceDBContext;
+import dal.GroupDBContext;
 import dal.SessionDBContext;
 import dal.StudentDBContext;
 import dal.SubjectDBContext;
@@ -14,6 +15,7 @@ import dal.TotalCourseDBContext;
 import entity.Account;
 import entity.Attendance;
 import entity.Grade;
+import entity.Group;
 import entity.Role;
 import entity.Subject;
 import entity.Term;
@@ -42,7 +44,8 @@ public class AttendanceReportController extends BaseRBACController {
         StudentDBContext stdb = new StudentDBContext();
         if (stdb.checkStudentIDByAccount(account, sid)) {
             String termid = req.getParameter("term");
-            String subid = req.getParameter("subid");
+            String gid = req.getParameter("gid");
+            GroupDBContext grDB = new GroupDBContext();
             TermDBContext tdb = new TermDBContext();
             ArrayList<Term> term = tdb.getTerm(sid);
             ArrayList<Subject> subjects = new ArrayList<>();
@@ -51,9 +54,11 @@ public class AttendanceReportController extends BaseRBACController {
             if (termid != null) {
                 subjects = sdb.getSubjects(sid, termid);
                 req.setAttribute("termid", termid);
+                ArrayList<Group> groups = grDB.getGroupBySidGid(sid, termid);
+                req.setAttribute("groups", groups);
             }
-            if (subid != null) {
-                ArrayList<Attendance> atts = attdb.getAttendancesForView(sid, subid, termid);
+            if (gid != null) {
+                ArrayList<Attendance> atts = attdb.getAttendancesForView(sid, Integer.parseInt(gid), termid);
                 int countAbsent = attdb.countAbsent(sid, atts.get(0).getSes().getGroup());
                 SessionDBContext sesdb = new SessionDBContext();
                 int totalSes = sesdb.countSession(atts.get(0).getSes().getGroup());
@@ -62,14 +67,14 @@ public class AttendanceReportController extends BaseRBACController {
                 req.setAttribute("countAbsent", countAbsent);
                 req.setAttribute("totalSes", totalSes);
                 req.setAttribute("absentPercent", absentPercent.intValue());
-                req.setAttribute("subid", subid);
+                req.setAttribute("gid", gid);
             }
 
             req.setAttribute("sid", sid);
             req.setAttribute("term", term);
-            req.setAttribute("subjects", subjects);
+//            req.setAttribute("subjects", subjects);
             req.getRequestDispatcher("view/attendance/viewattend.jsp").forward(req, resp);
-        }else{
+        } else {
             req.getRequestDispatcher("view/studentaccessdenied.jsp").forward(req, resp);
         }
     }

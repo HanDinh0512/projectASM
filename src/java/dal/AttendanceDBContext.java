@@ -86,7 +86,8 @@ public class AttendanceDBContext extends DBContext<Attendance> {
         }
         return attendancesBySID;
     }
-    public ArrayList<Attendance> getAttendancesForView(String sid,String subid, String term) {
+
+    public ArrayList<Attendance> getAttendancesForView(String sid, int gid, String term) {
         ArrayList<Attendance> attendancesBySID = new ArrayList<>();
         try {
             String sql = "select ses.sesid, ses.lid, ses.room,ses.date, ses.isTaken, en.sid, \n"
@@ -98,11 +99,11 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                     + "                    inner join timeslot t on t.tid = ses.tid\n"
                     + "                    inner join lecturer l on l.lid = ses.lid\n"
                     + "					left join attendance att on en.sid = att.sid and ses.sesid = att.sesid\n"
-                    + "                    where en.sid = ? and g.subid = ? and g.term = ?"
+                    + "                    where en.sid = ? and g.gid = ? and g.term = ?"
                     + "order by ses.sesid";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, sid);
-            stm.setString(2, subid);
+            stm.setInt(2, gid);
             stm.setString(3, term);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -170,7 +171,7 @@ public class AttendanceDBContext extends DBContext<Attendance> {
                 Session ses = new Session();
                 Student stu = new Student();
                 Group g = new Group();
-                
+
                 g.setGid(rs.getInt("gid"));
                 ses.setGroup(g);
                 att.setAid(rs.getInt("aid"));
@@ -272,12 +273,54 @@ public class AttendanceDBContext extends DBContext<Attendance> {
             stm.setString(1, sid);
             stm.setInt(2, group.getGid());
             ResultSet rs = stm.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
                 count = rs.getInt("count");
             }
         } catch (SQLException ex) {
             java.util.logging.Logger.getLogger(AttendanceDBContext.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         return count;
+    }
+
+    public ArrayList<Attendance> getAttendancesforLecturer(String lid, int gid, String sid) {
+        ArrayList<Attendance> attendances = new ArrayList<>();
+        try {
+            String sql = "SELECT \n"
+                    + "                                        s.sid,s.name,g.gid,\n"
+                    + "                                        a.aid,a.description,a.isPresent,a.time\n"
+                    + "                                        FROM Student s INNER JOIN Enrollment e ON s.sid = e.sid\n"
+                    + "                                        INNER JOIN [group] g ON g.gid = e.gid\n"
+                    + "                                         inner join lecturer l on l.lname = g.PIC\n"
+                    + "                                        	INNER JOIN session les ON les.gid = g.gid\n"
+                    + "                                        	LEFT JOIN Attendance a ON a.sesid = les.sesid AND a.sid = s.sid\n"
+                    + "                                        WHERE l.lid = ? and g.gid = ? and s.sid = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, lid);
+            stm.setInt(2, gid);
+            stm.setString(3, sid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Attendance att = new Attendance();
+                Session ses = new Session();
+                Student stu = new Student();
+                Group g = new Group();
+
+                g.setGid(rs.getInt("gid"));
+                ses.setGroup(g);
+                att.setAid(rs.getInt("aid"));
+                att.setDescription(rs.getString("description"));
+                att.setTime(rs.getTimestamp("time"));
+                att.setIsPresent(rs.getBoolean("isPresent"));
+
+                stu.setSid(rs.getString("sid"));
+                stu.setName(rs.getString("name"));
+                att.setSes(ses);
+                att.setStudent(stu);
+                attendances.add(att);
+            }
+        } catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(AttendanceDBContext.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        return attendances;
     }
 }

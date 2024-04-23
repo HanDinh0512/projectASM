@@ -60,6 +60,18 @@
         <servlet-name>LecturerInfo</servlet-name>
         <servlet-class>controller.information.LecturerInfoController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>NewsController</servlet-name>
+        <servlet-class>controller.news.NewsController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NewsDetailController</servlet-name>
+        <servlet-class>controller.news.NewsDetailController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AttendanceLecturerController</servlet-name>
+        <servlet-class>controller.attendance.AttendanceLecturerController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -135,5 +147,17 @@
     <servlet-mapping>
         <servlet-name>LecturerInfo</servlet-name>
         <url-pattern>/lecturerinfo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewsController</servlet-name>
+        <url-pattern>/news</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewsDetailController</servlet-name>
+        <url-pattern>/newdetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AttendanceLecturerController</servlet-name>
+        <url-pattern>/attendancereport</url-pattern>
     </servlet-mapping>
 </web-app>

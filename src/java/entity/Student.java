@@ -4,6 +4,7 @@
  */
 package entity;
 import java.sql.*;
+import java.util.ArrayList;
 /**
  *
  * @author admin
@@ -16,6 +17,17 @@ public class Student extends IEntity{
     private String email ;
     private boolean gender ;
     private Date dob ;
+    private ArrayList<Attendance> attendances;
+
+    public ArrayList<Attendance> getAttendances() {
+        return attendances;
+    }
+
+    public void setAttendances(ArrayList<Attendance> attendances) {
+        this.attendances = attendances;
+    }
+    
+    
 
     public Date getDob() {
         return dob;

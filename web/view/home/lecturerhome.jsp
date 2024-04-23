@@ -237,6 +237,9 @@
                         <a href="<%=request.getContextPath()%>/requestreceived?id=${requestScope.lecturerid}" class="button">Request Received</a>
                     </li>
                     <li>            
+                        <a href="<%=request.getContextPath()%>/attendancereport?id=${requestScope.lecturerid}" class="button">Attendance Report</a>
+                    </li>
+                    <li>            
                         <a href="<%=request.getContextPath()%>/lecturerinfo?id=${requestScope.lecturerid}" class="button">Lecturer Information</a>
                     </li>
                 </ul>

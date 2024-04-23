@@ -195,7 +195,11 @@
         <div class="welcome">
             <h2>Welcome to FAP </h2>
         </div>
-
+        
+        <div class="notice">
+            <span>XEM TIN TỨC MỚI</span><br/>
+            <a class="noticeClick" href="<%=request.getContextPath()%>/news"> TẠI ĐÂY</a>
+        </div>
 
         <div  class="container">
             <div class="header-fpt">
